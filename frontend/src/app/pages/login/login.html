@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="card login-card">
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <label>Usuario o correo</label>
+    <input type="text" formControlName="usuario" />
+
+    @if (
+      loginForm.get('usuario')?.invalid &&
+      loginForm.get('usuario')?.touched
+    ) {
+      <small class="error">
+        El usuario o correo es obligatorio.
+      </small>
+    }
+
+      <label>Contraseña</label>
+      <input type="password" formControlName="password" />
+
+      @if (
+        loginForm.get('password')?.hasError('required') &&
+        loginForm.get('password')?.touched
+      ) {
+        <small class="error">
+          La contraseña es obligatoria.
+        </small>
+      }
+
+      @if (
+        loginForm.get('password')?.hasError('minlength') &&
+        loginForm.get('password')?.touched
+      ) {
+        <small class="error">
+          Debe tener al menos 8 caracteres.
+        </small>
+      }
+
+      @if (
+        loginForm.get('password')?.hasError('pattern') &&
+        loginForm.get('password')?.touched
+      ) {
+        <small class="error">
+          Debe contener una mayúscula y un número.
+        </small>
+      }
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <a routerLink="/register">Crear cuenta</a>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="register-container">
+  <div class="card register-card">
+    <h2>Crear cuenta</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+
+      <label>Nombre</label>
+      <input type="text" formControlName="nombre" />
+
+      @if (
+        registerForm.controls.nombre.touched &&
+        registerForm.controls.nombre.invalid
+      ) {
+        <small class="error">
+          El nombre es obligatorio
+        </small>
+      }
+
+      <label>Apellido</label>
+      <input type="text" formControlName="apellido" />
+
+      @if (
+        registerForm.controls.apellido.touched &&
+        registerForm.controls.apellido.invalid
+      ) {
+        <small class="error">
+          El apellido es obligatorio
+        </small>
+      }
+
+      <label>Correo electrónico</label>
+      <input type="email" formControlName="email" />
+
+      @if (
+        registerForm.controls.email.touched &&
+        registerForm.controls.email.invalid
+      ) {
+        <small class="error">
+          Ingresá un correo válido
+        </small>
+      }
+
+      <label>Nombre de usuario</label>
+      <input type="text" formControlName="username" />
+
+      @if (
+        registerForm.controls.username.touched &&
+        registerForm.controls.username.invalid
+      ) {
+        <small class="error">
+          El usuario es obligatorio
+        </small>
+      }
+
+      <label>Contraseña</label>
+      <input type="password" formControlName="password" />
+
+      @if (
+        registerForm.controls.password.touched &&
+        registerForm.controls.password.invalid
+      ) {
+        <small class="error">
+          Mínimo 8 caracteres, una mayúscula y un número
+        </small>
+      }
+
+      <label>Repetir contraseña</label>
+      <input
+        type="password"
+        formControlName="repetirPassword"
+      />
+
+      @if (
+        registerForm.controls.repetirPassword.touched &&
+        registerForm.controls.repetirPassword.invalid
+      ) {
+        <small class="error">
+          Debés repetir la contraseña
+        </small>
+      }
+
+      <label>Fecha de nacimiento</label>
+      <input
+        type="date"
+        formControlName="fechaNacimiento"
+      />
+
+      @if (
+        registerForm.controls.fechaNacimiento.touched &&
+        registerForm.controls.fechaNacimiento.invalid
+      ) {
+        <small class="error">
+          La fecha es obligatoria
+        </small>
+      }
+
+      <label>Descripción</label>
+      <textarea
+        rows="4"
+        formControlName="descripcion"
+      ></textarea>
+
+      <label>Imagen de perfil</label>
+      <input type="file" />
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <button type="submit" [disabled]="loading">
+        {{
+          loading
+            ? 'Registrando...'
+            : 'Crear cuenta'
+        }}
+      </button>
+    </form>
+
+    <a routerLink="/login">
+      Ya tengo una cuenta
+    </a>
+  </div>
+</div>
