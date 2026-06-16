@@ -101,7 +101,11 @@
       ></textarea>
 
       <label>Imagen de perfil</label>
-      <input type="file" />
+      <input
+        type="file"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+      />
 
       @if (errorMessage) {
         <p class="error">{{ errorMessage }}</p>

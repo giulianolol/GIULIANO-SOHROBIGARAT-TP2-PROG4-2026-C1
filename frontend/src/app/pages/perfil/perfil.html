@@ -1,1 +1,37 @@
-<p>perfil works!</p>
+<div class="container">
+  <h1>Mi Perfil</h1>
+
+  @if (user) {
+
+    <p><strong>Nombre:</strong> {{ user.nombre }}</p>
+
+    <p><strong>Apellido:</strong> {{ user.apellido }}</p>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <p><strong>Usuario:</strong> {{ user.username }}</p>
+
+    <p>
+      <strong>Fecha nacimiento:</strong>
+      {{ user.fechaNacimiento }}
+    </p>
+
+    <p>
+      <strong>Descripción:</strong>
+      {{ user.descripcion }}
+    </p>
+
+    <p>
+      <strong>Perfil:</strong>
+      {{ user.perfil }}
+    </p>
+
+  } @else {
+
+    <p>No hay usuario logueado</p>
+
+  }
+  <button routerLink="/publicaciones">
+    Volver
+  </button>
+</div>

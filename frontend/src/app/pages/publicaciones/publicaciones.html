@@ -1,9 +1,13 @@
 <div class="container">
-  <h1>Publicaciones</h1>
+<h1>Publicaciones</h1>
 
-  <p>Bienvenido {{ user?.nombre }}</p>
+<p>Bienvenido {{ user?.nombre }}</p>
 
-  <button (click)="logout()">
-    Cerrar sesión
-  </button>
+<button routerLink="/perfil">
+  Mi perfil
+</button>
+
+<button (click)="logout()">
+  Cerrar sesión
+</button>
 </div>

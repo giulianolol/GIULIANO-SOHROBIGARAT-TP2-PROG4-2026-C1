@@ -24,6 +24,8 @@ export class Register {
   errorMessage = '';
   loading = false;
 
+  selectedFile: File | null = null;
+
   registerForm;
 
   constructor(
@@ -63,33 +65,51 @@ export class Register {
     );
   }
 
-  submit(): void {
-    this.errorMessage = '';
+  onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
 
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
+  if (input.files && input.files.length > 0) {
+    this.selectedFile = input.files[0];
+  }
+}
 
-    if (!this.passwordsMatch()) {
-      this.errorMessage =
-        'Las contraseñas no coinciden';
-      return;
-    }
+submit(): void {
+  this.errorMessage = '';
 
-    this.loading = true;
+  if (this.registerForm.invalid) {
+    this.registerForm.markAllAsTouched();
+    return;
+  }
 
+  if (!this.passwordsMatch()) {
+    this.errorMessage =
+      'Las contraseñas no coinciden';
+    return;
+  }
+
+  this.loading = true;
+
+  const registerUser = (
+    imageUrl: string = '',
+  ) => {
     const body = {
-      nombre: this.registerForm.getRawValue().nombre,
-      apellido: this.registerForm.getRawValue().apellido,
-      email: this.registerForm.getRawValue().email,
-      username: this.registerForm.getRawValue().username,
-      password: this.registerForm.getRawValue().password,
+      nombre:
+        this.registerForm.getRawValue().nombre,
+      apellido:
+        this.registerForm.getRawValue().apellido,
+      email:
+        this.registerForm.getRawValue().email,
+      username:
+        this.registerForm.getRawValue().username,
+      password:
+        this.registerForm.getRawValue().password,
       fechaNacimiento:
-        this.registerForm.getRawValue().fechaNacimiento,
+        this.registerForm.getRawValue()
+          .fechaNacimiento,
       descripcion:
-        this.registerForm.getRawValue().descripcion,
-      imagenPerfil: '',
+        this.registerForm.getRawValue()
+          .descripcion,
+      imagenPerfil: imageUrl,
     };
 
     this.authService.register(body).subscribe({
@@ -107,5 +127,23 @@ export class Register {
         this.loading = false;
       },
     });
+  };
+
+  if (this.selectedFile) {
+    this.authService
+      .upload(this.selectedFile)
+      .subscribe({
+        next: (response) => {
+          registerUser(response.imageUrl);
+        },
+        error: () => {
+          this.errorMessage =
+            'No se pudo subir la imagen';
+          this.loading = false;
+        },
+      });
+  } else {
+    registerUser();
   }
+}
 }

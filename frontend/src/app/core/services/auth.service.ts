@@ -27,13 +27,29 @@ export class AuthService {
   private apiUrl = 'http://localhost:3000/auth';
 
   login(body: LoginRequest): Observable<UserResponse> {
-    return this.http.post<UserResponse>(`${this.apiUrl}/login`, body);
+    return this.http.post<UserResponse>(
+      `${this.apiUrl}/login`,
+      body,
+    );
   }
 
   register(body: any) {
-  return this.http.post(
-    `${this.apiUrl}/register`,
-    body,
-  );
-}
+    return this.http.post(
+      `${this.apiUrl}/register`,
+      body,
+    );
+  }
+
+  upload(file: File) {
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    return this.http.post<{
+      imageUrl: string;
+    }>(
+      `${this.apiUrl}/upload`,
+      formData,
+    );
+  }
 }
