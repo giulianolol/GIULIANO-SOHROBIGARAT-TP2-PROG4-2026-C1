@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -12,17 +12,13 @@ import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
 export class Register {
-  errorMessage = '';
-  loading = false;
+  errorMessage = signal('');
+  loading = signal(false);
 
   selectedFile: File | null = null;
 
@@ -36,19 +32,14 @@ export class Register {
     this.registerForm = this.fb.nonNullable.group({
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
-      email: [
-        '',
-        [Validators.required, Validators.email],
-      ],
+      email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
       password: [
         '',
         [
           Validators.required,
           Validators.minLength(8),
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*\d).{8,}$/,
-          ),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
         ],
       ],
       repetirPassword: ['', Validators.required],
@@ -56,6 +47,11 @@ export class Register {
       descripcion: [''],
       imagenPerfil: [''],
     });
+  }
+
+  hasError(controlName: string): boolean {
+    const ctrl = this.registerForm.get(controlName);
+    return !!ctrl && ctrl.touched && ctrl.invalid;
   }
 
   passwordsMatch(): boolean {
@@ -66,84 +62,55 @@ export class Register {
   }
 
   onFileSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-
-  if (input.files && input.files.length > 0) {
-    this.selectedFile = input.files[0];
-  }
-}
-
-submit(): void {
-  this.errorMessage = '';
-
-  if (this.registerForm.invalid) {
-    this.registerForm.markAllAsTouched();
-    return;
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 
-  if (!this.passwordsMatch()) {
-    this.errorMessage =
-      'Las contraseñas no coinciden';
-    return;
-  }
+  submit(): void {
+    this.errorMessage.set('');
 
-  this.loading = true;
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      return;
+    }
 
-  const registerUser = (
-    imageUrl: string = '',
-  ) => {
-    const body = {
-      nombre:
-        this.registerForm.getRawValue().nombre,
-      apellido:
-        this.registerForm.getRawValue().apellido,
-      email:
-        this.registerForm.getRawValue().email,
-      username:
-        this.registerForm.getRawValue().username,
-      password:
-        this.registerForm.getRawValue().password,
-      fechaNacimiento:
-        this.registerForm.getRawValue()
-          .fechaNacimiento,
-      descripcion:
-        this.registerForm.getRawValue()
-          .descripcion,
-      imagenPerfil: imageUrl,
+    if (!this.passwordsMatch()) {
+      this.errorMessage.set('Las contraseñas no coinciden');
+      return;
+    }
+
+    this.loading.set(true);
+
+    const registerUser = (imageUrl = '') => {
+      const body = {
+        ...this.registerForm.getRawValue(),
+        imagenPerfil: imageUrl,
+      };
+
+      this.authService.register(body).subscribe({
+        next: () => this.router.navigateByUrl('/login'),
+        error: (err) => {
+          this.errorMessage.set(
+            err?.error?.message || 'No se pudo registrar',
+          );
+          this.loading.set(false);
+        },
+        complete: () => this.loading.set(false),
+      });
     };
 
-    this.authService.register(body).subscribe({
-      next: () => {
-        this.router.navigateByUrl('/login');
-      },
-      error: (err) => {
-        this.errorMessage =
-          err?.error?.message ||
-          'No se pudo registrar';
-
-        this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      },
-    });
-  };
-
-  if (this.selectedFile) {
-    this.authService
-      .upload(this.selectedFile)
-      .subscribe({
-        next: (response) => {
-          registerUser(response.imageUrl);
-        },
+    if (this.selectedFile) {
+      this.authService.upload(this.selectedFile).subscribe({
+        next: (response) => registerUser(response.imageUrl),
         error: () => {
-          this.errorMessage =
-            'No se pudo subir la imagen';
-          this.loading = false;
+          this.errorMessage.set('No se pudo subir la imagen');
+          this.loading.set(false);
         },
       });
-  } else {
-    registerUser();
+    } else {
+      registerUser();
+    }
   }
-}
 }
