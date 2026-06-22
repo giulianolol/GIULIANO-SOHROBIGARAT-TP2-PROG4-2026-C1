@@ -1,0 +1,27 @@
+<nav class="navbar">
+
+  <div class="logo">
+    UTNgram
+  </div>
+
+  <div class="links">
+
+    <a routerLink="/publicaciones">
+      Publicaciones
+    </a>
+
+    <a routerLink="/perfil">
+      Mi Perfil
+    </a>
+
+    <span>
+      {{ user?.nombre }}
+    </span>
+
+    <button (click)="logout()">
+      Salir
+    </button>
+
+  </div>
+
+</nav>

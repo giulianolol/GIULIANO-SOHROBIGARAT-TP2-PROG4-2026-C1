@@ -1,37 +1,96 @@
+<app-navbar />
+<!--
 <div class="container">
   <h1>Mi Perfil</h1>
 
   @if (user) {
 
-    <p><strong>Nombre:</strong> {{ user.nombre }}</p>
+ <div class="profile-header">
 
-    <p><strong>Apellido:</strong> {{ user.apellido }}</p>
+      <img
+        class="profile-image"
+        [src]="user.imagenPerfil"
+        alt="Foto de perfil"
+      />
 
-    <p><strong>Email:</strong> {{ user.email }}</p>
+      <div class="profile-info">
 
-    <p><strong>Usuario:</strong> {{ user.username }}</p>
+        <h2>
+          {{ user.nombre }}
+          {{ user.apellido }}
+        </h2>
 
-    <p>
-      <strong>Fecha nacimiento:</strong>
-      {{ user.fechaNacimiento }}
-    </p>
+        <span class="profile-role">
+          {{ user.perfil }}
+        </span>
 
-    <p>
-      <strong>Descripción:</strong>
-      {{ user.descripcion }}
-    </p>
+      </div>
 
-    <p>
-      <strong>Perfil:</strong>
-      {{ user.perfil }}
-    </p>
+    </div>
+
+    <div class="profile-details">
+
+      <div class="detail-card">
+        <strong>Email</strong>
+        {{ user.email }}
+      </div>
+
+      <div class="detail-card">
+        <strong>Usuario</strong>
+        {{ user.username }}
+      </div>
+
+      <div class="detail-card">
+        <strong>Fecha de nacimiento</strong>
+        {{ user.fechaNacimiento }}
+      </div>
+
+      <div class="detail-card">
+        <strong>Descripción</strong>
+        {{ user.descripcion }}
+      </div>
+
+    </div>
+
+<h2>Mis últimas publicaciones</h2>
+
+@if (misPosts().length === 0) {
+
+  <p>No tenés publicaciones.</p>
+
+} @else {
+
+  <div class="posts-grid">
+
+    @for (post of misPosts(); track post._id) {
+
+      <div class="post-card">
+
+        <h4>{{ post.titulo }}</h4>
+
+        <p>{{ post.descripcion }}</p>
+
+        <p>
+          ❤️ {{ post.likes.length }}
+        </p>
+
+      </div>
+
+    }
+
+  </div>
+
+}
 
   } @else {
 
     <p>No hay usuario logueado</p>
 
   }
+
   <button routerLink="/publicaciones">
     Volver
   </button>
-</div>
+
+</div> -->
+
