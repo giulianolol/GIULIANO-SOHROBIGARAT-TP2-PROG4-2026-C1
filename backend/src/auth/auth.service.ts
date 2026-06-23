@@ -1,13 +1,16 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
+import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService,
+    private readonly jwtService: JwtService
+  ) {}
 
   async register(registerDto: RegisterDto) {
     const emailExists = await this.usersService.findByEmail(
@@ -74,10 +77,21 @@ export class AuthService {
     );
   }
 
-  const userObject = (user as any).toObject();
+const userObject = (user as any).toObject();
 
-  delete userObject.password;
+delete userObject.password;
 
-  return userObject;
+const payload = {
+  sub: userObject._id,
+  email: userObject.email,
+  perfil: userObject.perfil,
+};
+
+console.log('JWT LOGIN');
+
+return {
+  access_token: this.jwtService.sign(payload),
+  user: userObject,
+};
 }
 }

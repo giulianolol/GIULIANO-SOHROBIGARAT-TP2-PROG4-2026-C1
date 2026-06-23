@@ -18,7 +18,10 @@ async function bootstrap() {
       join(__dirname, '..', 'uploads'),
     ),
   );
-
+  console.log(
+  'JWT_SECRET:',
+  process.env.JWT_SECRET,
+);
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
