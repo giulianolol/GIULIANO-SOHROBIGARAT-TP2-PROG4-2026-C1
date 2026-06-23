@@ -24,7 +24,7 @@ export interface UserResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/auth';
+  private apiUrl = 'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/auth';
 
   login(body: LoginRequest): Observable<UserResponse> {
     return this.http.post<UserResponse>(
