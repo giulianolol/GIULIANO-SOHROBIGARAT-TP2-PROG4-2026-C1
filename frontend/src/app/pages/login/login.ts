@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { signal } from '@angular/core';
 
 import { AuthService } from '../../core/services/auth.service';
 
@@ -14,10 +15,13 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './login.scss',
 })
 export class Login {
-  errorMessage = '';
-  loading = false;
+  // errorMessage = '';
+  // loading = false;
 
   loginForm;
+
+  errorMessage = signal('');
+  loading = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -37,10 +41,10 @@ export class Login {
     });
   }
 
-  submit(): void {
+submit(): void {
   console.log('1 - Entré al submit');
 
-  this.errorMessage = '';
+  this.errorMessage.set('');
 
   if (this.loginForm.invalid) {
     console.log('2 - Formulario inválido');
@@ -51,7 +55,7 @@ export class Login {
   console.log('3 - Formulario válido');
   console.log(this.loginForm.getRawValue());
 
-  this.loading = true;
+  this.loading.set(true);
 
   console.log('4 - Antes del login');
 
@@ -59,20 +63,31 @@ export class Login {
     next: (user) => {
       console.log('5 - SUCCESS', user);
 
-      localStorage.setItem('user', JSON.stringify(user));
-      this.router.navigateByUrl('/publicaciones');
+      localStorage.setItem(
+        'user',
+        JSON.stringify(user),
+      );
+
+      this.router.navigateByUrl(
+        '/publicaciones',
+      );
     },
+
     error: (err) => {
       console.log('6 - ERROR', err);
 
-      this.errorMessage =
-        err?.error?.message || 'No se pudo iniciar sesión';
+      this.errorMessage.set(
+        err?.error?.message ||
+        'No se pudo iniciar sesión'
+      );
 
-      this.loading = false;
+      this.loading.set(false);
     },
+
     complete: () => {
       console.log('7 - COMPLETE');
-      this.loading = false;
+
+      this.loading.set(false);
     },
   });
 }

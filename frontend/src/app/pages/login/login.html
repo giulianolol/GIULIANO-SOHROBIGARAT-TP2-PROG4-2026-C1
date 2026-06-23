@@ -3,20 +3,24 @@
     <h2>Iniciar sesión</h2>
 
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
-    <label>Usuario o correo</label>
-    <input type="text" formControlName="usuario" />
 
-    @if (
-      loginForm.get('usuario')?.invalid &&
-      loginForm.get('usuario')?.touched
-    ) {
-      <small class="error">
-        El usuario o correo es obligatorio.
-      </small>
-    }
+      <label>Usuario o correo</label>
+      <input type="text" formControlName="usuario" />
+
+      @if (
+        loginForm.get('usuario')?.invalid &&
+        loginForm.get('usuario')?.touched
+      ) {
+        <small class="error">
+          El usuario o correo es obligatorio.
+        </small>
+      }
 
       <label>Contraseña</label>
-      <input type="password" formControlName="password" />
+      <input
+        type="password"
+        formControlName="password"
+      />
 
       @if (
         loginForm.get('password')?.hasError('required') &&
@@ -45,11 +49,31 @@
         </small>
       }
 
-      <button type="submit" [disabled]="loading">
-        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      @if (errorMessage()) {
+        <small class="error">
+          {{ errorMessage() }}
+        </small>
+      }
+
+      <button
+        type="submit"
+        [disabled]="loading()"
+      >
+        {{
+          loading()
+            ? 'Ingresando...'
+            : 'Ingresar'
+        }}
       </button>
+
     </form>
 
-    <button type="submit" routerLink="/register">Crear cuenta</button>
+    <button
+      type="button"
+      routerLink="/register"
+    >
+      Crear cuenta
+    </button>
+
   </div>
 </div>
