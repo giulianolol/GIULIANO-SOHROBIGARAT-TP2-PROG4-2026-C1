@@ -67,11 +67,12 @@
       }
 
       <label>Fecha de nacimiento</label>
-      <input
-        type="date"
-        formControlName="fechaNacimiento"
-        [class.input-error]="hasError('fechaNacimiento')"
-      />
+  <input
+    type="date"
+    formControlName="fechaNacimiento"
+    [max]="maxDate"
+    [class.input-error]="hasError('fechaNacimiento')"
+  />
       @if (hasError('fechaNacimiento')) {
         <small class="error">La fecha es obligatoria</small>
       }

@@ -41,9 +41,9 @@
       </div>
 
       <div class="detail-card">
-        <strong>Fecha de nacimiento</strong>
-        {{ user.fechaNacimiento }}
-      </div>
+  <strong>Fecha de nacimiento</strong>
+  {{ user.fechaNacimiento | date:'dd/MM/yyyy' }}
+</div>
 
       <div class="detail-card">
         <strong>Descripción</strong>

@@ -7,11 +7,12 @@ import {
 import { RouterLink } from '@angular/router';
 import { Navbar } from '../../components/navbar/navbar';
 import { PostsService } from './../../core/services/posts.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [RouterLink, Navbar],
+  imports: [RouterLink, Navbar, CommonModule],
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss',
 })
@@ -44,3 +45,4 @@ export class Perfil implements OnInit {
       });
   }
 }
+
