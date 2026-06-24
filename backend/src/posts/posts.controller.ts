@@ -26,17 +26,20 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(
-    @Body() createPostDto: CreatePostDto,
-    @Req() req,
-  ) {
-    createPostDto.autorId =
-    req.user.userId;
+create(
+  @Body() createPostDto: CreatePostDto,
+  @Req() req,
+) {
+  console.log('req.user:', req.user);
+  console.log('autorNombre:', req.user.nombre);
 
-    return this.postsService.create(
-      createPostDto,
-    );
-  }
+  createPostDto.autorId = req.user.userId;
+  createPostDto.autorNombre = req.user.nombre;
+
+  console.log('dto:', createPostDto);
+
+  return this.postsService.create(createPostDto);
+}
 
   @Get()
   findAll(

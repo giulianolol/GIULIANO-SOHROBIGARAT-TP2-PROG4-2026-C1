@@ -3,4 +3,5 @@ export class CreatePostDto {
   descripcion: string;
   imagenUrl?: string;
   autorId: string;
+  autorNombre: string;
 }

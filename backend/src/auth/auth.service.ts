@@ -81,10 +81,13 @@ const userObject = (user as any).toObject();
 
 delete userObject.password;
 
+console.log('userObject:', userObject);
+
 const payload = {
   sub: userObject._id,
   email: userObject.email,
   perfil: userObject.perfil,
+  nombre: userObject.nombre
 };
 
 console.log('JWT LOGIN');

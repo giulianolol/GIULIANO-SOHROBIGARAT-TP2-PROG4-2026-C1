@@ -25,6 +25,9 @@ export class Post {
 
   @Prop({ default: false })
   deleted: boolean;
+
+  @Prop()
+  autorNombre: string;
 }
 
 export const PostSchema =
