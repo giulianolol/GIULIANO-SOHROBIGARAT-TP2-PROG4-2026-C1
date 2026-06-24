@@ -27,6 +27,7 @@
 
   @for (post of publicaciones(); track post._id) {
 
+
     <div class="post-card">
 
 <app-post-card
@@ -35,6 +36,15 @@
 
       <br />
       <br />
+
+          @if(post.imagenUrl){
+
+  <img
+    [src]="post.imagenUrl"
+    class="post-image"
+  />
+
+}
 
       <button (click)="addLike(post._id)">
         Like
