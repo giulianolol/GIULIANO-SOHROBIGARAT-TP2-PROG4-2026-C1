@@ -1,0 +1,63 @@
+<div class="create-container">
+  <div class="card create-card">
+
+    <h2>Nueva publicación</h2>
+
+    <form [formGroup]="postForm" (ngSubmit)="submit()">
+
+      <label>Título</label>
+      <input
+        type="text"
+        formControlName="titulo"
+      />
+
+      @if (
+  postForm.get('titulo')?.invalid &&
+  postForm.get('titulo')?.touched
+) {
+  <small class="error">
+    El título es obligatorio.
+  </small>
+}
+
+      <label>Descripción</label>
+      <textarea
+        rows="5"
+        formControlName="descripcion"
+      ></textarea>
+
+      @if (
+  postForm.get('descripcion')?.invalid &&
+  postForm.get('descripcion')?.touched
+) {
+  <small class="error">
+    La descripción es obligatoria.
+  </small>
+}
+
+      <div class="button-group">
+
+        <button
+          type="submit"
+          [disabled]="loading()"
+        >
+          {{
+            loading()
+              ? 'Publicando...'
+              : 'Publicar'
+          }}
+        </button>
+
+        <button
+          type="button"
+          routerLink="/publicaciones"
+        >
+          Volver
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

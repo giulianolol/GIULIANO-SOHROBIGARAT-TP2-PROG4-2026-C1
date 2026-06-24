@@ -34,4 +34,14 @@ MongooseModule.forRootAsync({
   PostsModule,
 ],
 })
-export class AppModule {}
+export class AppModule {constructor() {
+    console.log(
+      'JWT:',
+      process.env.JWT_SECRET,
+    );
+
+    console.log(
+      'CLOUD:',
+      process.env.CLOUDINARY_CLOUD_NAME,
+    );
+  }}

@@ -6,9 +6,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PostsService {
   private http = inject(HttpClient);
-
-  private apiUrl =
-  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+private apiUrl = 'http://localhost:3000/posts';
+  // private apiUrl =
+  // 'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
 
  getPosts(
   sort = 'fecha',
@@ -57,6 +57,18 @@ export class PostsService {
     );
   }
   
+create(body: {
+  titulo: string;
+  descripcion: string;
+  autorId: string;
+})
+{
+  return this.http.post(
+    `${this.apiUrl}`,
+    body,
+  );
+}
+
   getPostsByUser(userId: string) {
   return this.http.get<any[]>(
     `${this.apiUrl}?autorId=${userId}&limit=3&t=${Date.now()}`

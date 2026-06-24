@@ -7,7 +7,9 @@ import {
   Query,
 } from '@nestjs/common';
 
-
+import { Req } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { Param } from '@nestjs/common';
 import { LikePostDto } from './dto/like-post.dto';
@@ -20,10 +22,15 @@ export class PostsController {
     private readonly postsService: PostsService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(
     @Body() createPostDto: CreatePostDto,
+    @Req() req,
   ) {
+    createPostDto.autorId =
+    req.user.userId;
+
     return this.postsService.create(
       createPostDto,
     );

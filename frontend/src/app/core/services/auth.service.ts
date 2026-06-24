@@ -28,12 +28,15 @@ export class AuthService {
   // private apiUrl =
 // 'http://localhost:3000/auth';
 
-  login(body: LoginRequest): Observable<UserResponse> {
-    return this.http.post<UserResponse>(
-      `${this.apiUrl}/login`,
-      body,
-    );
-  }
+  login(body: LoginRequest) {
+  return this.http.post<{
+    access_token: string;
+    user: UserResponse;
+  }>(
+    `${this.apiUrl}/login`,
+    body,
+  );
+}
 
   register(body: any) {
     return this.http.post(

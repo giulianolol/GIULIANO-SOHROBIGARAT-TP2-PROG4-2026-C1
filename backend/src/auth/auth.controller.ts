@@ -6,8 +6,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { FileInterceptor } from '@nestjs/platform-express';
+import cloudinary from '../cloudinary/cloudinary.config';
+import * as fs from 'fs';
 
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -34,11 +36,22 @@ export class AuthController {
       dest: './uploads',
     }),
   )
-  uploadFile(
-    @UploadedFile() file: any,
-  ) {
-    return {
-      imageUrl: `http://localhost:3000/uploads/${file.filename}`,
-    };
-  }
+async uploadFile(
+  @UploadedFile() file: any,
+) {
+
+  const result =
+    await cloudinary.uploader.upload(
+      file.path,
+      {
+        folder: 'red-social',
+      },
+    );
+
+  fs.unlinkSync(file.path);
+
+  return {
+    imageUrl: result.secure_url,
+  };
+}
 }

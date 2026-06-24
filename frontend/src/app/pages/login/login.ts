@@ -60,18 +60,23 @@ submit(): void {
   console.log('4 - Antes del login');
 
   this.authService.login(this.loginForm.getRawValue()).subscribe({
-    next: (user) => {
-      console.log('5 - SUCCESS', user);
+next: (response) => {
+  console.log('5 - SUCCESS', response);
 
-      localStorage.setItem(
-        'user',
-        JSON.stringify(user),
-      );
+  localStorage.setItem(
+    'token',
+    response.access_token,
+  );
 
-      this.router.navigateByUrl(
-        '/publicaciones',
-      );
-    },
+  localStorage.setItem(
+    'user',
+    JSON.stringify(response.user),
+  );
+
+  this.router.navigateByUrl(
+    '/publicaciones',
+  );
+},
 
     error: (err) => {
       console.log('6 - ERROR', err);
