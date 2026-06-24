@@ -75,4 +75,20 @@ create(body: {
     `${this.apiUrl}?autorId=${userId}&limit=3&t=${Date.now()}`
   );
 }
+
+removeImage(postId: string) {
+  return this.http.delete(
+    `${this.apiUrl}/${postId}/image`
+  );
+}
+
+updateImage(
+  postId: string,
+  imagenUrl: string,
+) {
+  return this.http.patch(
+    `${this.apiUrl}/${postId}/image`,
+    { imagenUrl },
+  );
+}
 }

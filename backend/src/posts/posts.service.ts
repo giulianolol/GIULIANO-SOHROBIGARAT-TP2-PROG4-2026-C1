@@ -132,4 +132,35 @@ async deletePost(
   return post.save();
 }
 
+async updateImage(
+  postId: string,
+  imagenUrl: string,
+) {
+
+  const post =
+    await this.postModel.findById(postId);
+
+  if (!post) {
+    throw new NotFoundException(
+      'Publicación no encontrada',
+    );
+  }
+
+  post.imagenUrl = imagenUrl;
+
+  return post.save();
+}
+
+async removeImage(postId: string) {
+  const post = await this.postModel.findById(postId);
+
+  if (!post) {
+    throw new NotFoundException('Publicación no encontrada');
+  }
+
+  post.imagenUrl = '';
+
+  return post.save();
+}
+
 }

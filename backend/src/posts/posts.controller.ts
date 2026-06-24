@@ -5,8 +5,10 @@ import {
   Get,
   Post,
   Query,
+  Patch
 } from '@nestjs/common';
 
+import { UpdateImageDto } from './dto/update-image.dto';
 import { Req } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -74,6 +76,16 @@ removeLike(
     body.userId,
   );
 }
+
+@Delete(':id/image')
+removeImage(
+  @Param('id') id: string,
+) {
+  return this.postsService.removeImage(
+    id,
+  );
+}
+
 @Delete(':id')
 deletePost(
   @Param('id') id: string,
@@ -83,6 +95,19 @@ deletePost(
     id,
     body.userId,
     body.perfil,
+  );
+}
+
+
+
+@Patch(':id/image')
+updateImage(
+  @Param('id') id: string,
+  @Body() body: UpdateImageDto,
+) {
+  return this.postsService.updateImage(
+    id,
+    body.imagenUrl,
   );
 }
 }

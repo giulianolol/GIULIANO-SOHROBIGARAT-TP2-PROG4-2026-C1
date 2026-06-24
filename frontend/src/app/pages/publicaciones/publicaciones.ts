@@ -8,6 +8,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-publicaciones',
@@ -31,7 +32,7 @@ export class Publicaciones implements OnInit {
   constructor(
     private router: Router,
     private postsService: PostsService,
-    
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -131,5 +132,53 @@ previousPage() {
     this.offset -= this.limit;
     this.loadPosts();
   }
+}
+
+changeImage(
+  event: Event,
+  postId: string,
+) {
+
+  const input =
+    event.target as HTMLInputElement;
+
+  if (
+    !input.files ||
+    input.files.length === 0
+  ) {
+    return;
+  }
+
+  const file =
+    input.files[0];
+
+  this.authService.upload(
+    file,
+  ).subscribe({
+
+    next: (response) => {
+
+      this.postsService
+        .updateImage(
+          postId,
+          response.imageUrl,
+        )
+        .subscribe(() => {
+
+          this.loadPosts();
+        });
+    },
+  });
+}
+
+removeImage(postId: string) {
+  this.postsService.removeImage(postId).subscribe({
+    next: () => {
+      this.loadPosts();
+    },
+    error: (err) => {
+      console.error(err);
+    },
+  });
 }
 }

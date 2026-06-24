@@ -56,9 +56,19 @@
 
       @if (post.autorId === user._id) {
         <button (click)="deletePost(post._id)">
-          Eliminar
+          Eliminar Publicación
         </button>
       }
+
+      @if(post.imagenUrl){
+
+  <button
+    (click)="removeImage(post._id)"
+  >
+    🗑️ Eliminar foto
+  </button>
+
+}
 
     </div>
 
