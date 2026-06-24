@@ -25,6 +25,8 @@ export class Publicaciones implements OnInit {
   publicaciones = signal<any[]>([]);
   sort = 'fecha';
 
+  errorMessage = signal<string>('');
+
   limit = 5;
   hasNextPage = true;
   offset = 0;
@@ -174,6 +176,7 @@ changeImage(
 removeImage(postId: string) {
   this.postsService.removeImage(postId).subscribe({
     next: () => {
+      this.errorMessage.set('');
       this.loadPosts();
     },
     error: (err) => {

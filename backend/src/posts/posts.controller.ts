@@ -80,13 +80,13 @@ removeLike(
   );
 }
 
+@UseGuards(JwtAuthGuard)
 @Delete(':id/image')
-removeImage(
+async removeImage(
   @Param('id') id: string,
+  @Req() req,
 ) {
-  return this.postsService.removeImage(
-    id,
-  );
+  return this.postsService.removeImage(id, req.user.userId);
 }
 
 @Delete(':id')

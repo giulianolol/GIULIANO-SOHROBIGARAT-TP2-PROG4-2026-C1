@@ -60,14 +60,10 @@
         </button>
       }
 
-      @if(post.imagenUrl){
-
-  <button
-    (click)="removeImage(post._id)"
-  >
+@if(post.imagenUrl && post.autorId === user._id){
+  <button (click)="removeImage(post._id)">
     🗑️ Eliminar foto
   </button>
-
 }
 
     </div>

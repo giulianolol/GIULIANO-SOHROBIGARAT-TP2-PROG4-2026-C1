@@ -151,11 +151,15 @@ async updateImage(
   return post.save();
 }
 
-async removeImage(postId: string) {
+async removeImage(postId: string, userId: string) {
   const post = await this.postModel.findById(postId);
 
   if (!post) {
     throw new NotFoundException('Publicación no encontrada');
+  }
+
+  if (post.autorId !== userId) {
+    throw new BadRequestException('No tenés permisos para eliminar la foto');
   }
 
   post.imagenUrl = '';
