@@ -97,4 +97,24 @@ return {
   user: userObject,
 };
 }
+
+async refresh(user: any) {
+
+  const payload = {
+
+    sub: user.userId,
+    email: user.email,
+    perfil: user.perfil,
+    nombre: user.nombre,
+
+  };
+
+  return {
+
+    access_token:
+      this.jwtService.sign(payload),
+
+  };
+
+}
 }

@@ -91,4 +91,57 @@ updateImage(
     { imagenUrl },
   );
 }
+
+getComments(
+  postId: string,
+  limit = 5,
+  offset = 0,
+) {
+  return this.http.get<{
+    comments: any[];
+    total: number;
+  }>(
+    `${this.apiUrl}/${postId}/comments?limit=${limit}&offset=${offset}`
+  );
+}
+
+getPost(id: string) {
+
+  console.log('SERVICE getPost:', `${this.apiUrl}/${id}`);
+
+  return this.http.get<any>(
+    `${this.apiUrl}/${id}`
+  );
+}
+
+addComment(
+  postId: string,
+  body: {
+    autorId: string;
+    autor: string;
+    mensaje: string;
+  },
+) {
+  return this.http.post(
+    `${this.apiUrl}/${postId}/comments`,
+    body,
+  );
+}
+
+updateComment(
+  postId: string,
+  commentId: string,
+  mensaje: string,
+) {
+
+  return this.http.put(
+
+    `${this.apiUrl}/${postId}/comments/${commentId}`,
+
+    { mensaje },
+
+  );
+
+}
+
 }

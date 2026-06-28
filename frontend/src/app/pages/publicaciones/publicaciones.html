@@ -28,7 +28,10 @@
   @for (post of publicaciones(); track post._id) {
 
 
-    <div class="post-card">
+    <div
+  class="post-card"
+  [routerLink]="['/publicaciones', post._id]"
+>
 
 <app-post-card
   [post]="post">
@@ -45,7 +48,11 @@
   />
 
 }
-
+      <button
+        [routerLink]="['/publicaciones', post._id]"
+      >
+        Ver detalle
+      </button>
       <button (click)="addLike(post._id)">
         Like
       </button>

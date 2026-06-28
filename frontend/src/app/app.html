@@ -330,5 +330,19 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+ 
+@if(loading()){
 
-<router-outlet />
+  <div class="loading">
+
+    <div class="spinner"></div>
+
+    <h2>Cargando...</h2>
+
+  </div>
+
+} @else {
+
+  <router-outlet></router-outlet>
+
+}

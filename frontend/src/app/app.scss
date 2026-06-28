@@ -1,0 +1,49 @@
+.loading {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+
+  background: rgba(255,255,255,.95);
+
+  z-index: 9999;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+
+  border: 8px solid #ddd;
+  border-top: 8px solid #222;
+
+  border-radius: 50%;
+
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+.loading h2 {
+
+  margin: 0;
+
+  font-size: 1.2rem;
+
+  color: #333;
+
+}

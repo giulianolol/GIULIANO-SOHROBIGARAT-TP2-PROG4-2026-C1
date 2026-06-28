@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Post,
+  UseGuards,
+  Request,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,6 +15,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -30,12 +33,12 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      dest: './uploads',
-    }),
-  )
+@Post('upload')
+@UseInterceptors(
+  FileInterceptor('file', {
+    dest: './uploads',
+  }),
+)
 async uploadFile(
   @UploadedFile() file: any,
 ) {
@@ -53,5 +56,30 @@ async uploadFile(
   return {
     imageUrl: result.secure_url,
   };
+}
+
+@Post('authorize')
+@UseGuards(JwtAuthGuard)
+authorize(
+  @Request() req,
+) {
+
+  return {
+    valid: true,
+    user: req.user,
+  };
+
+}
+
+@Post('refresh')
+@UseGuards(JwtAuthGuard)
+refresh(
+  @Request() req,
+) {
+
+  return this.authService.refresh(
+    req.user,
+  );
+
 }
 }

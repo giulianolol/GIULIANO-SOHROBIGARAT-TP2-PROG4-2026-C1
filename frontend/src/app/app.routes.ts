@@ -5,6 +5,7 @@ import { Register } from './pages/register/register';
 import { Publicaciones } from './pages/publicaciones/publicaciones';
 import { Perfil } from './pages/perfil/perfil';
 import { CrearPublicacion } from './features/publicaciones/crear-publicacion/crear-publicacion';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,10 +13,7 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  {
-  path: 'publicaciones/nueva',
-  component: CrearPublicacion,
-},
+
   {
     path: 'login',
     component: Login,
@@ -24,12 +22,28 @@ export const routes: Routes = [
     path: 'register',
     component: Register,
   },
+
   {
     path: 'publicaciones',
     component: Publicaciones,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'publicaciones/nueva',
+    component: CrearPublicacion,
+    canActivate: [AuthGuard],
   },
   {
     path: 'perfil',
     component: Perfil,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'publicaciones/:id',
+    loadComponent: () =>
+      import(
+        './pages/publicaciones/detalle-publicacion/detalle-publicacion'
+      ).then(c => c.DetallePublicacion),
+    canActivate: [AuthGuard],
   },
 ];

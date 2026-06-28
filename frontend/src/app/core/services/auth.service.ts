@@ -57,4 +57,23 @@ export class AuthService {
       formData,
     );
   }
+
+  authorize() {
+  return this.http.post<{
+    valid: boolean;
+    user: UserResponse;
+  }>(
+    `${this.apiUrl}/authorize`,
+    {},
+  );
+}
+
+refresh() {
+  return this.http.post<{
+    access_token: string;
+  }>(
+    `${this.apiUrl}/refresh`,
+    {},
+  );
+}
 }

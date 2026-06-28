@@ -4,10 +4,13 @@ import {
   Delete,
   Get,
   Post,
+  Put,
   Query,
   Patch
 } from '@nestjs/common';
 
+import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { Req } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
@@ -101,8 +104,6 @@ deletePost(
   );
 }
 
-
-
 @Patch(':id/image')
 updateImage(
   @Param('id') id: string,
@@ -112,5 +113,74 @@ updateImage(
     id,
     body.imagenUrl,
   );
+}
+
+@Post(':id/comments')
+addComment(
+
+  @Param('id')
+  id: string,
+
+  @Body()
+  body: CreateCommentDto,
+
+) {
+
+  return this.postsService.addComment(
+    id,
+    body,
+  );
+
+}
+
+@Get(':id/comments')
+getComments(
+
+  @Param('id')
+  id: string,
+
+  @Query('limit')
+  limit?: string,
+
+  @Query('offset')
+  offset?: string,
+
+) {
+
+  return this.postsService.getComments(
+    id,
+    Number(limit) || 5,
+    Number(offset) || 0,
+  );
+
+}
+
+@Put(':postId/comments/:commentId')
+updateComment(
+
+  @Param('postId')
+  postId: string,
+
+  @Param('commentId')
+  commentId: string,
+
+  @Body()
+  body: UpdateCommentDto,
+
+) {
+
+  return this.postsService.updateComment(
+    postId,
+    commentId,
+    body,
+  );
+
+}
+
+@Get(':id')
+findOne(
+  @Param('id') id: string,
+) {
+  return this.postsService.findOne(id);
 }
 }
