@@ -44,11 +44,15 @@ export class App implements OnInit {
 
       next: () => {
 
-        this.loading.set(false);
-        this.router.navigateByUrl('/publicaciones');
-        this.startSessionTimers();
+  setTimeout(() => {
 
-      },
+    this.loading.set(false);
+    this.router.navigateByUrl('/publicaciones');
+    this.startSessionTimers();
+
+  }, 3000);
+
+},
 
       error: () => {
 
