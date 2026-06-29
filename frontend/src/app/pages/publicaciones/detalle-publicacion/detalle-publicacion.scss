@@ -1,16 +1,58 @@
 .container{
 
-    max-width:900px;
+    max-width:950px;
 
-    margin:auto;
+    margin:40px auto;
 
-    background:white;
+    padding:30px;
 
-    padding:2rem;
+}
 
-    border-radius:20px;
+.back-button{
 
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
+    margin-bottom:20px;
+
+    background:#ffffff;
+
+    color:#444;
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:30px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+
+}
+
+.back-button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.post-card{
+
+    background:rgba(255,255,255,.95);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+    margin-bottom:35px;
+
+    animation:fade .4s;
 
 }
 
@@ -18,40 +60,288 @@
 
     width:100%;
 
-    max-height:500px;
+    max-height:520px;
 
     object-fit:cover;
 
-    border-radius:15px;
+    transition:.35s;
 
-    margin-bottom:20px;
+}
+
+.post-image:hover{
+
+    transform:scale(1.02);
+
+}
+
+.post-info{
+
+    padding:30px;
+
+}
+
+.post-info h1{
+
+    margin:0;
+
+    font-size:2rem;
+
+    color:#222;
+
+}
+
+.description{
+
+    margin:25px 0;
+
+    font-size:1.1rem;
+
+    line-height:1.8;
+
+    color:#555;
+
+}
+
+.likes{
+
+    display:inline-flex;
+
+    gap:10px;
+
+    align-items:center;
+
+    background:#fff0f3;
+
+    color:#e63946;
+
+    padding:12px 22px;
+
+    border-radius:30px;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+}
+
+.comments-section{
+
+    background:rgba(255,255,255,.9);
+
+    padding:25px;
+
+    border-radius:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+
+    margin-bottom:30px;
 
 }
 
 .comment-card{
 
-    background:#f7f7f7;
+    background:white;
 
-    padding:15px;
+    border-radius:18px;
 
-    border-radius:10px;
+    padding:20px;
+
+    margin-bottom:18px;
+
+    transition:.25s;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.comment-card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.comment-header{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
 
     margin-bottom:15px;
 
-    border-left:5px solid #1f2937;
+}
+
+.avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+    font-size:1.2rem;
 
 }
 
-.comment-card strong{
+.message{
 
-    display:block;
+    line-height:1.7;
 
-    margin-bottom:8px;
+    color:#444;
+
+    margin-bottom:15px;
 
 }
 
-.comment-card small{
+textarea{
 
-    color:gray;
+    width:100%;
+
+    resize:none;
+
+    border:none;
+
+    border-radius:15px;
+
+    padding:16px;
+
+    background:#f3f5f8;
+
+    font-size:1rem;
+
+    margin-top:15px;
+
+}
+
+textarea:focus{
+
+    outline:2px solid #2563eb;
+
+}
+
+.edit-btn,
+.save-btn,
+.publish-btn,
+.load-btn{
+
+    margin-top:15px;
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:30px;
+
+    padding:12px 24px;
+
+    font-weight:bold;
+
+    transition:.25s;
+
+}
+
+.edit-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.save-btn{
+
+    background:#16a34a;
+
+    color:white;
+
+}
+
+.publish-btn{
+
+    width:100%;
+
+    background:#7c3aed;
+
+    color:white;
+
+    margin-top:20px;
+
+}
+
+.load-btn{
+
+    width:100%;
+
+    background:white;
+
+    border:2px solid #2563eb;
+
+    color:#2563eb;
+
+}
+
+.edit-btn:hover,
+.save-btn:hover,
+.publish-btn:hover,
+.load-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(0,0,0,.15);
+
+}
+
+.new-comment{
+
+    background:rgba(255,255,255,.95);
+
+    padding:25px;
+
+    border-radius:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+
+}
+
+.empty{
+
+    text-align:center;
+
+    color:#777;
+
+    padding:20px;
+
+}
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
 
 }

@@ -1,8 +1,18 @@
 <div class="login-container">
-  <div class="card login-card">
-    <h2>Iniciar sesión</h2>
 
-    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <div class="card login-card">
+
+    <h2>Bienvenido</h2>
+
+    <p class="subtitle">
+      Iniciá sesión para continuar en UTNgram
+    </p>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="submit()"
+    >
+
 
       <label>Usuario o correo</label>
       <input type="text" formControlName="usuario" />
@@ -69,11 +79,12 @@
     </form>
 
     <button
-      type="button"
-      routerLink="/register"
-    >
-      Crear cuenta
-    </button>
+  type="button"
+  routerLink="/register"
+  class="secondary-btn"
+>
+  Crear cuenta
+</button>
 
   </div>
 </div>

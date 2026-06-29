@@ -1,111 +1,159 @@
-@if(post()) {
+@if(post()){
 
 <div class="container">
 
-  @if(post()?.imagenUrl){
+  <button
+    class="back-button"
+    routerLink="/publicaciones">
+    ← Volver a publicaciones
+  </button>
 
-    <img
-      [src]="post()?.imagenUrl"
-      class="post-image"
-    />
+  <div class="post-card">
 
-  }
+    @if(post()?.imagenUrl){
 
-  <h2>{{ post()?.titulo }}</h2>
-
-  <p>{{ post()?.descripcion }}</p>
-
-  <hr>
-
-  <p>❤️ {{ post()?.likes.length }}</p>
-
-  <hr>
-
-  <h3>Comentarios</h3>
-
-@if(comentarios().length === 0){
-
-  <p>No hay comentarios.</p>
-
-}
-
-@for(comment of comentarios(); track comment._id){
-
-  <div class="comment-card">
-
-    <strong>{{ comment.autor }}</strong>
-
-    @if(editingCommentId === comment._id){
-
-      <textarea
-        rows="3"
-        [(ngModel)]="editedMessage"
-      ></textarea>
-
-      <br>
-
-      <button
-        (click)="saveComment(comment._id)"
-      >
-        Guardar
-      </button>
-
-    } @else {
-
-      <p>{{ comment.mensaje }}</p>
+      <img
+        [src]="post()?.imagenUrl"
+        class="post-image"
+      />
 
     }
 
-    <small>
-      {{ comment.fecha | date:'dd/MM/yyyy HH:mm' }}
-    </small>
+    <div class="post-info">
 
-    @if(comment.modificado){
-      <em> (editado)</em>
+      <h1>{{ post()?.titulo }}</h1>
+
+      <p class="description">
+        {{ post()?.descripcion }}
+      </p>
+
+      <div class="likes">
+
+        ❤️
+        <strong>{{ post()?.likes.length }}</strong>
+
+        Me gusta
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="comments-section">
+
+    <h2>💬 Comentarios</h2>
+
+    @if(comentarios().length === 0){
+
+      <p class="empty">
+        Todavía no hay comentarios.
+      </p>
+
     }
 
-    @if(comment.autorId === user._id){
+    @for(comment of comentarios(); track comment._id){
 
-      <br><br>
+      <div class="comment-card">
+
+        <div class="comment-header">
+
+          <div class="avatar">
+
+            {{ comment.autor.charAt(0).toUpperCase() }}
+
+          </div>
+
+          <div>
+
+            <strong>{{ comment.autor }}</strong>
+
+            <br>
+
+            <small>
+
+              {{ comment.fecha | date:'dd/MM/yyyy HH:mm' }}
+
+              @if(comment.modificado){
+
+                · Editado
+
+              }
+
+            </small>
+
+          </div>
+
+        </div>
+
+        @if(editingCommentId === comment._id){
+
+          <textarea
+            rows="3"
+            [(ngModel)]="editedMessage">
+          </textarea>
+
+          <button
+            class="save-btn"
+            (click)="saveComment(comment._id)">
+            Guardar cambios
+          </button>
+
+        } @else {
+
+          <p class="message">
+            {{ comment.mensaje }}
+          </p>
+
+        }
+
+        @if(comment.autorId === user._id){
+
+          <button
+            class="edit-btn"
+            (click)="startEdit(comment)">
+            ✏️ Editar
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+    @if(hasMoreComments){
 
       <button
-        (click)="startEdit(comment)"
-      >
-        Editar
+        class="load-btn"
+        (click)="loadMoreComments()">
+
+        Cargar más comentarios
+
       </button>
 
     }
 
   </div>
 
-}
+  <div class="new-comment">
 
-@if(hasMoreComments){
+    <h2>Escribir comentario</h2>
 
-  <button
-    (click)="loadMoreComments()"
-  >
-    Cargar más comentarios
-  </button>
+    <textarea
+      rows="4"
+      placeholder="¿Qué pensás sobre esta publicación?"
+      [(ngModel)]="nuevoComentario">
+    </textarea>
 
-}
+    <button
+      class="publish-btn"
+      (click)="comentar()">
 
-<hr>
+      Publicar comentario
 
-<h3>Agregar comentario</h3>
+    </button>
 
-<textarea
-  rows="4"
-  [(ngModel)]="nuevoComentario"
-></textarea>
-
-<br><br>
-
-<button
-  (click)="comentar()"
->
-  Comentar
-</button>
+  </div>
 
 </div>
 

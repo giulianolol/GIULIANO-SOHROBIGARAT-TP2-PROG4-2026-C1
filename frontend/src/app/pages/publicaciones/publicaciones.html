@@ -1,107 +1,91 @@
 <app-navbar />
+
 <div class="container">
+
   <h1>Publicaciones</h1>
 
-  <!-- <hr /> -->
+<div class="toolbar">
 
-  <h3>Ordenar por</h3>
+  <div class="sort-section">
 
-  <button (click)="changeSort('fecha')">
-    Fecha
+    <span class="toolbar-title">
+      Ordenar por
+    </span>
+
+    <button
+      class="toolbar-btn"
+      (click)="changeSort('fecha')"
+    >
+      📅 Fecha
+    </button>
+
+    <button
+      class="toolbar-btn"
+      (click)="changeSort('likes')"
+    >
+      ❤️ Likes
+    </button>
+
+  </div>
+
+  <button
+    class="new-post-btn"
+    routerLink="/publicaciones/nueva"
+  >
+    ➕ Nueva publicación
   </button>
 
-  <button (click)="changeSort('likes')">
-    Likes
-  </button>
-<button
-  routerLink="/publicaciones/nueva"
->
-  Nueva publicación
-</button>
-  <hr />
+</div>
+
+<hr>
+
+  <hr>
 
   <p>
     Cantidad de publicaciones:
     {{ publicaciones().length }}
   </p>
 
-  @for (post of publicaciones(); track post._id) {
+  <div class="posts-grid">
 
+  @for(post of publicaciones(); track post._id){
 
-    <div
-  class="post-card"
-  [routerLink]="['/publicaciones', post._id]"
->
-
-<app-post-card
-  [post]="post">
-</app-post-card>
-
-      <br />
-      <br />
-
-          @if(post.imagenUrl){
-
-  <img
-    [src]="post.imagenUrl"
-    class="post-image"
-  />
-
-}
-      <button
-        [routerLink]="['/publicaciones', post._id]"
-      >
-        Ver detalle
-      </button>
-      <button (click)="addLike(post._id)">
-        Like
-      </button>
-
-      <button (click)="removeLike(post._id)">
-        Quitar Like
-      </button>
-
-      @if (post.autorId === user._id) {
-        <button (click)="deletePost(post._id)">
-          Eliminar Publicación
-        </button>
-      }
-
-@if(post.imagenUrl && post.autorId === user._id){
-  <button (click)="removeImage(post._id)">
-    🗑️ Eliminar foto
-  </button>
-}
-
-    </div>
+    <app-post-card
+      [post]="post"
+      [user]="user"
+      (like)="addLike(post._id)"
+      (unlike)="removeLike(post._id)"
+      (delete)="deletePost(post._id)"
+      (removeImage)="removeImage(post._id)"
+    >
+    </app-post-card>
 
   }
 
-<div class="pagination">
-
- <button
-  (click)="previousPage()"
-  [disabled]="offset === 0" 
->
-  ← Página Anterior
-</button>
-
-  <span class="page-indicator">
-    Página {{ currentPage }}
-  </span>
-
-  <span>
-    Mostrando {{ publicaciones().length }} publicaciones
-  </span>
-
-  <button
-  (click)="nextPage()"
-  [disabled]="!hasNextPage"
->
-  Página Siguiente →
-</button>
-
 </div>
 
-  <hr />
+  <div class="pagination">
+
+    <button
+      (click)="previousPage()"
+      [disabled]="offset === 0"
+    >
+      ← Página anterior
+    </button>
+
+    <span class="page-indicator">
+
+      Página {{ currentPage }}
+
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="!hasNextPage"
+    >
+      Página siguiente →
+    </button>
+
+  </div>
+
 </div>

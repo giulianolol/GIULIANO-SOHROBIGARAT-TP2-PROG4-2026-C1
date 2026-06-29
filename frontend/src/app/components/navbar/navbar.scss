@@ -1,41 +1,167 @@
 .navbar {
-  height: 70px;
+
+  position: sticky;
+  top: 0;
+
+  z-index: 1000;
+
+  height: 75px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 2rem;
+  padding: 0 2.5rem;
 
-  background: #1f2937;
-  color: white;
+  background: rgba(25, 25, 35, .55);
 
-  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.25);
+
 }
 
 .logo {
-  font-size: 1.3rem;
+
+  font-size: 1.7rem;
+
   font-weight: 700;
-}
 
-.links {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.links a {
   color: white;
-  text-decoration: none;
+
+  letter-spacing: 1px;
+
+  cursor: default;
+
+  transition: .3s;
+
 }
 
-.links a:hover {
-  opacity: .8;
+.logo:hover{
+
+  transform: scale(1.05);
+
+  text-shadow:
+    0 0 12px rgba(255,255,255,.6);
+
 }
 
-button {
-  border: none;
-  padding: .6rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
+.links{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:1.4rem;
+
+}
+
+.links a{
+
+  color:white;
+
+  font-weight:600;
+
+  padding:.55rem 1rem;
+
+  border-radius:10px;
+
+  transition:.25s;
+
+}
+
+.links a:hover{
+
+  background:
+    rgba(255,255,255,.15);
+
+  transform:
+    translateY(-2px);
+
+}
+
+.links span{
+
+  padding:.55rem 1rem;
+
+  border-radius:10px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  color:white;
+
+  font-weight:600;
+
+}
+
+.links button{
+
+  background:
+    linear-gradient(
+      135deg,
+      #667eea,
+      #764ba2
+    );
+
+  color:white;
+
+  border:none;
+
+  padding:.7rem 1.2rem;
+
+  border-radius:12px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.25s;
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.2);
+
+}
+
+.links button:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.35);
+
+}
+
+.links button:active{
+
+  transform:scale(.96);
+
+}
+
+@media(max-width:900px){
+
+  .navbar{
+
+    flex-direction:column;
+
+    height:auto;
+
+    gap:1rem;
+
+    padding:1rem;
+
+  }
+
+  .links{
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+  }
+
 }

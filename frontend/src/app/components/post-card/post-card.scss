@@ -1,0 +1,155 @@
+:host{
+
+  display:block;
+
+}
+
+.post-card{
+
+  background:
+    rgba(255,255,255,.92);
+
+  border-radius:22px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.18);
+
+  transition:.35s;
+
+}
+
+.post-card:hover{
+
+  transform:
+    translateY(-8px);
+
+  box-shadow:
+    0 25px 45px rgba(0,0,0,.30);
+
+}
+
+.post-image{
+
+  width:100%;
+
+  height:260px;
+
+  object-fit:cover;
+
+  transition:.4s;
+
+}
+
+.post-card:hover .post-image{
+
+  transform:scale(1.05);
+
+}
+
+.post-body{
+
+  padding:20px;
+
+}
+
+h3{
+
+  margin-top:0;
+
+  color:#333;
+
+}
+
+p{
+
+  color:#666;
+
+}
+
+.likes{
+
+  font-size:1.1rem;
+
+  color:#ff4f7b;
+
+  font-weight:bold;
+
+}
+
+.buttons{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap:12px;
+
+  margin-top:25px;
+
+}
+
+.buttons button{
+
+  border:none;
+
+  border-radius:14px;
+
+  padding:12px;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+  color:white;
+
+  transition:.25s;
+
+}
+
+.buttons button:nth-child(1){
+
+  background:
+    linear-gradient(135deg,#3f51b5,#5c6bc0);
+
+}
+
+.buttons button:nth-child(2){
+
+  background:
+    linear-gradient(135deg,#ec407a,#d81b60);
+
+}
+
+.buttons button:nth-child(3){
+
+  background:
+    linear-gradient(135deg,#fb8c00,#f4511e);
+
+}
+
+.buttons button:nth-child(4){
+
+  background:
+    linear-gradient(135deg,#e53935,#b71c1c);
+
+}
+
+.buttons button:nth-child(5){
+
+  background:
+    linear-gradient(135deg,#546e7a,#37474f);
+
+}
+
+.buttons button:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 12px 22px rgba(0,0,0,.25);
+
+}

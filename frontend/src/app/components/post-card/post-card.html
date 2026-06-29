@@ -1,15 +1,80 @@
 <div class="post-card">
 
-  <h3>{{ post.titulo }}</h3>
+  @if(post.imagenUrl){
 
-  <p>{{ post.descripcion }}</p>
+    <img
+      [src]="post.imagenUrl"
+      class="post-image"
+    >
 
-  <p>
-    Likes: {{ post.likes.length }}
-  </p>
+  }
 
-<small>
-  Autor: {{ post.autorNombre }}
-</small>
+  <div class="post-body">
+
+    <h3>
+      {{ post.titulo }}
+    </h3>
+
+    <p>
+
+      {{ post.descripcion }}
+
+    </p>
+
+    <small>
+
+      👤 {{ post.autorNombre }}
+
+    </small>
+
+    <div class="likes">
+
+      ❤️ {{ post.likes.length }}
+
+    </div>
+
+    <div class="buttons">
+
+      <button
+        [routerLink]="['/publicaciones', post._id]"
+      >
+        Ver detalle
+      </button>
+
+      <button
+        (click)="like.emit()"
+      >
+        ❤️ Like
+      </button>
+
+      <button
+        (click)="unlike.emit()"
+      >
+        💔 Quitar Like
+      </button>
+
+      @if(post.autorId === user._id){
+
+        <button
+          (click)="delete.emit()"
+        >
+          🗑 Eliminar
+        </button>
+
+      }
+
+      @if(post.imagenUrl && post.autorId === user._id){
+
+        <button
+          (click)="removeImage.emit()"
+        >
+          📷 Eliminar foto
+        </button>
+
+      }
+
+    </div>
+
+  </div>
 
 </div>

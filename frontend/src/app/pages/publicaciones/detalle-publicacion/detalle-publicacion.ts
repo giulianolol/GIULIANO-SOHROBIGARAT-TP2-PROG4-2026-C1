@@ -5,6 +5,8 @@ import {
   signal,
 } from '@angular/core';
 
+
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +16,7 @@ import { PostsService } from '../../../core/services/posts.service';
 @Component({
   selector: 'app-detalle-publicacion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl:
     './detalle-publicacion.html',
   styleUrl:
