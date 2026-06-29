@@ -22,6 +22,8 @@ export class Publicaciones implements OnInit {
     localStorage.getItem('user') || 'null',
   );
 
+  loadingLike = signal<string | null>(null);
+
   publicaciones = signal<any[]>([]);
   sort = 'fecha';
 
@@ -70,28 +72,43 @@ changeSort(sort: string) {
   this.loadPosts();
 }
 
-  addLike(postId: string) {
+addLike(postId: string) {
+
+  this.loadingLike.set(postId);
+
   this.postsService
     .addLike(postId, this.user._id)
     .subscribe({
-      next: (resp) => {
-        console.log('Like agregado', resp);
 
+      next: () => {
         this.loadPosts();
       },
-      error: (err) => {
-        console.error(err);
-      },
+
+      complete: () => {
+        this.loadingLike.set(null);
+      }
+
     });
+
 }
 
+
+
 removeLike(postId: string) {
+
+  this.loadingLike.set(postId);
+
   this.postsService
     .removeLike(postId, this.user._id)
     .subscribe({
       next: () => {
         this.loadPosts();
       },
+
+      complete: () => {
+        this.loadingLike.set(null);
+      },
+      
       error: (err) => {
         console.error(err);
       },
@@ -184,4 +201,8 @@ removeImage(postId: string) {
     },
   });
 }
+
+
+
 }
+

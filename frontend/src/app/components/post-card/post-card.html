@@ -2,52 +2,63 @@
 
   @if(post.imagenUrl){
 
-    <img
-      [src]="post.imagenUrl"
-      class="post-image"
-    >
+    <div class="image-container">
+
+      <img
+        [src]="post.imagenUrl"
+        class="post-image"
+      >
+
+    </div>
 
   }
 
   <div class="post-body">
 
-    <h3>
-      {{ post.titulo }}
-    </h3>
+    <div class="post-header">
 
-    <p>
+      <div>
+
+        <h3>
+          {{ post.titulo }}
+        </h3>
+
+        <small>
+          👤 {{ post.autorNombre }}
+        </small>
+
+      </div>
+
+      <div class="likes">
+        ❤️ {{ post.likes.length }}
+      </div>
+
+    </div>
+
+    <p class="description">
 
       {{ post.descripcion }}
 
     </p>
 
-    <small>
-
-      👤 {{ post.autorNombre }}
-
-    </small>
-
-    <div class="likes">
-
-      ❤️ {{ post.likes.length }}
-
-    </div>
-
     <div class="buttons">
 
       <button
+        class="primary"
         [routerLink]="['/publicaciones', post._id]"
       >
-        Ver detalle
+        👁 Ver detalle
       </button>
 
       <button
+        class="success"
         (click)="like.emit()"
       >
         ❤️ Like
       </button>
 
       <button
+        class="danger"
         (click)="unlike.emit()"
       >
         💔 Quitar Like
@@ -56,6 +67,7 @@
       @if(post.autorId === user._id){
 
         <button
+          class="delete"
           (click)="delete.emit()"
         >
           🗑 Eliminar
@@ -66,6 +78,7 @@
       @if(post.imagenUrl && post.autorId === user._id){
 
         <button
+          class="warning"
           (click)="removeImage.emit()"
         >
           📷 Eliminar foto

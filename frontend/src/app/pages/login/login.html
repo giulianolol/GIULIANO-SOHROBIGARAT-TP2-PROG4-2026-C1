@@ -1,3 +1,15 @@
+@if(loading()){
+
+<div class="loading">
+
+  <div class="spinner"></div>
+
+  <h2>Iniciando sesión...</h2>
+
+</div>
+
+} @else {
+
 <div class="login-container">
 
   <div class="card login-card">
@@ -13,20 +25,26 @@
       (ngSubmit)="submit()"
     >
 
-
       <label>Usuario o correo</label>
-      <input type="text" formControlName="usuario" />
+
+      <input
+        type="text"
+        formControlName="usuario"
+      />
 
       @if (
         loginForm.get('usuario')?.invalid &&
         loginForm.get('usuario')?.touched
       ) {
+
         <small class="error">
           El usuario o correo es obligatorio.
         </small>
+
       }
 
       <label>Contraseña</label>
+
       <input
         type="password"
         formControlName="password"
@@ -36,55 +54,62 @@
         loginForm.get('password')?.hasError('required') &&
         loginForm.get('password')?.touched
       ) {
+
         <small class="error">
           La contraseña es obligatoria.
         </small>
+
       }
 
       @if (
         loginForm.get('password')?.hasError('minlength') &&
         loginForm.get('password')?.touched
       ) {
+
         <small class="error">
           Debe tener al menos 8 caracteres.
         </small>
+
       }
 
       @if (
         loginForm.get('password')?.hasError('pattern') &&
         loginForm.get('password')?.touched
       ) {
+
         <small class="error">
           Debe contener una mayúscula y un número.
         </small>
+
       }
 
       @if (errorMessage()) {
+
         <small class="error">
           {{ errorMessage() }}
         </small>
+
       }
 
       <button
         type="submit"
         [disabled]="loading()"
       >
-        {{
-          loading()
-            ? 'Ingresando...'
-            : 'Ingresar'
-        }}
+        Ingresar
       </button>
 
     </form>
 
     <button
-  type="button"
-  routerLink="/register"
-  class="secondary-btn"
->
-  Crear cuenta
-</button>
+      type="button"
+      routerLink="/register"
+      class="secondary-btn"
+    >
+      Crear cuenta
+    </button>
 
   </div>
+
 </div>
+
+}

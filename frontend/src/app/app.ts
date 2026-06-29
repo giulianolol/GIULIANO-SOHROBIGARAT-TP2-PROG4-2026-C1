@@ -10,12 +10,13 @@ import {
   RouterOutlet,
 } from '@angular/router';
 
+import { NgIf } from '@angular/common';
 import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NgIf],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -32,39 +33,51 @@ export class App implements OnInit {
 
   ngOnInit() {
 
-    const token = localStorage.getItem('token');
+  console.log('loading inicial', this.loading());
 
-    if (!token) {
-      this.loading.set(false);
-      this.router.navigateByUrl('/login');
-      return;
-    }
+  const token = localStorage.getItem('token');
 
-    this.authService.authorize().subscribe({
+  if (!token) {
 
-      next: () => {
+    this.loading.set(false);
+    this.router.navigateByUrl('/login');
+
+    return;
+  }
+
+  this.authService.authorize().subscribe({
+
+next: () => {
+
+  console.log('loading antes:', this.loading());
 
   setTimeout(() => {
 
+    console.log('voy a ocultar spinner');
+
     this.loading.set(false);
+
+    console.log('loading después:', this.loading());
+
     this.router.navigateByUrl('/publicaciones');
-    this.startSessionTimers();
 
   }, 3000);
 
 },
 
-      error: () => {
+    error: () => {
 
-        localStorage.clear();
-        this.loading.set(false);
-        this.router.navigateByUrl('/login');
+      localStorage.clear();
 
-      },
+      this.loading.set(false);
 
-    });
+      this.router.navigateByUrl('/login');
 
-  }
+    }
+
+  });
+
+}
 
   startSessionTimers() {
 
@@ -123,4 +136,6 @@ export class App implements OnInit {
     if (this.warningTimer) clearTimeout(this.warningTimer);
     if (this.logoutTimer) clearTimeout(this.logoutTimer);
   }
+
+  
 }

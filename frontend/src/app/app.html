@@ -331,18 +331,12 @@
 <!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
  
-@if(loading()){
+<div class="loading" *ngIf="loading()">
 
-  <div class="loading">
+  <div class="spinner"></div>
 
-    <div class="spinner"></div>
+  <h2>Cargando...</h2>
 
-    <h2>Cargando...</h2>
+</div>
 
-  </div>
-
-} @else {
-
-  <router-outlet></router-outlet>
-
-}
+<router-outlet></router-outlet>
