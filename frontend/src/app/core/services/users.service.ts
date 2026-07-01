@@ -7,9 +7,12 @@ import { HttpClient } from '@angular/common/http';
 export class UsersService {
 
   private http = inject(HttpClient);
-
+  
   private apiUrl =
-    'http://localhost:3000/users';
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+
+  // private apiUrl =
+    // 'http://localhost:3000/users';
 
   getUsers() {
     return this.http.get<any[]>(this.apiUrl);

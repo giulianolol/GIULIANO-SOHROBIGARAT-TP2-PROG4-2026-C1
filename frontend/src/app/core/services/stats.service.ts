@@ -10,7 +10,10 @@ export class StatsService {
   private http = inject(HttpClient);
 
   private api =
-    'http://localhost:3000/posts/stats';
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+
+  // private api =
+    // 'http://localhost:3000/posts/stats';
 
   getPostsByUser() {
 

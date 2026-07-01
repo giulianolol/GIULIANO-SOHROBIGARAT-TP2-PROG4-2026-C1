@@ -6,9 +6,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PostsService {
   private http = inject(HttpClient);
-private apiUrl = 'http://localhost:3000/posts';
-  // private apiUrl =
-  // 'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+// private apiUrl = 'http://localhost:3000/posts';
+  private apiUrl =
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
 
  getPosts(
   sort = 'fecha',
