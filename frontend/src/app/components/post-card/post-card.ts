@@ -5,13 +5,22 @@ import {
   Output,
 } from '@angular/core';
 
+import { TimeAgoPipe } from '../../shared/pipes/time-ago-pipe';
+import { CapitalizePipe } from '../../shared/pipes/capitalize-pipe';
 import { RouterLink } from '@angular/router';
 import { TruncatePipe } from '../../shared/pipes/truncate-pipe';
+import { HighlightDirective } from '../../shared/directives/highlight.directive';
 
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [RouterLink, TruncatePipe],
+  imports: [
+  RouterLink,
+  HighlightDirective,
+  TruncatePipe,
+  TimeAgoPipe,
+  CapitalizePipe,
+],
   templateUrl: './post-card.html',
   styleUrl: './post-card.scss',
 })
