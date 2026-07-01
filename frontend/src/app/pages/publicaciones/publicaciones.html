@@ -1,82 +1,89 @@
 <app-navbar />
+
 <div
 class="container"
 appFadeIn>
 
+  <h1>Publicaciones</h1>
 
-<h1>Publicaciones</h1>
+  @if(errorMessage()){
 
-@if(errorMessage()){
-  <div class="error-banner">
-    ⚠️ {{ errorMessage() }}
-  </div>
-}
+    <div class="error-banner">
+      ⚠️ {{ errorMessage() }}
+    </div>
 
-<div class="toolbar">
-  
-  <div class="sort-section">
+  }
 
-    <span class="toolbar-title">
-      Ordenar por
-    </span>
+  <div class="toolbar">
 
-<button
-      class="toolbar-btn"
-      [class.active]="sort === 'fecha'"
-      (click)="changeSort('fecha')"
-    >
-      📅 Fecha
-    </button>
+    <div class="sort-section">
+
+      <span class="toolbar-title">
+        Ordenar por
+      </span>
+
+      <button
+        class="toolbar-btn"
+        appHoverEffect
+        [class.active]="sort === 'fecha'"
+        (click)="changeSort('fecha')"
+      >
+        📅 Fecha
+      </button>
+
+      <button
+        class="toolbar-btn"
+        appHoverEffect
+        [class.active]="sort === 'likes'"
+        (click)="changeSort('likes')"
+      >
+        ❤️ Likes
+      </button>
+
+    </div>
 
     <button
-      class="toolbar-btn"
-      [class.active]="sort === 'likes'"
-      (click)="changeSort('likes')"
+      class="new-post-btn"
+      appHoverEffect
+      routerLink="/publicaciones/nueva"
     >
-      ❤️ Likes
+      ➕ Nueva publicación
     </button>
 
   </div>
-
-  <button
-    class="new-post-btn"
-    routerLink="/publicaciones/nueva"
-  >
-    ➕ Nueva publicación
-  </button>
-
-</div>
-
-<hr>
 
   <hr>
 
   <p>
+
     Cantidad de publicaciones:
+
     {{ publicaciones().length }}
+
   </p>
 
   <div class="posts-grid">
 
-  @for(post of publicaciones(); track post._id){
+    @for(post of publicaciones(); track post._id){
 
-    <app-post-card
-      [post]="post"
-      [user]="user"
-      (like)="addLike(post._id)"
-      (unlike)="removeLike(post._id)"
-      (delete)="deletePost(post._id)"
-      (removeImage)="removeImage(post._id)"
-    >
-    </app-post-card>
+      <app-post-card
+        [post]="post"
+        [user]="user"
+        (like)="addLike(post._id)"
+        (unlike)="removeLike(post._id)"
+        (delete)="deletePost(post._id)"
+        (removeImage)="removeImage(post._id)"
+      >
+      </app-post-card>
 
-  }
+    }
 
-</div>
+  </div>
 
   <div class="pagination">
 
     <button
+      appHoverEffect
       (click)="previousPage()"
       [disabled]="offset === 0"
     >
@@ -90,6 +97,7 @@ appFadeIn>
     </span>
 
     <button
+      appHoverEffect
       (click)="nextPage()"
       [disabled]="!hasNextPage"
     >
