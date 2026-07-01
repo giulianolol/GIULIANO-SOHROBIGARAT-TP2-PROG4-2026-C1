@@ -26,7 +26,13 @@ appHighlight>
         </h3>
 
         <small>
-          👤 {{ post.autorNombre }}
+          👤 {{ post.autorNombre | capitalize }}
+        </small>
+
+        <br>
+
+        <small>
+          🕒 {{ post.createdAt | timeAgo }}
         </small>
 
       </div>
@@ -43,7 +49,7 @@ appHighlight>
 
     </p>
 
-<div class="buttons">
+    <div class="buttons">
 
       <button
         class="primary"
@@ -62,20 +68,20 @@ appHighlight>
         {{ post.likes.length }}
       </button>
 
-@if(
-  post.autorId === user._id
-  || user.perfil === 'administrador'
-){
+      @if(
+        post.autorId === user._id
+        || user.perfil === 'administrador'
+      ){
 
-  <button
-    class="danger"
-    (click)="delete.emit()">
+        <button
+          class="danger"
+          (click)="delete.emit()">
 
-    🗑 Eliminar
+          🗑 Eliminar
 
-  </button>
+        </button>
 
-}
+      }
 
       @if(post.imagenUrl && post.autorId === user._id){
 
