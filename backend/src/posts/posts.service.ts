@@ -283,15 +283,49 @@ async findOne(id: string) {
   return post;
 }
 
-async getPostsByUser() {
+async getPostsByUser(
+  desde?: string,
+  hasta?: string,
+) {
 
-  const posts = await this.postModel.find({
+  const filtro: any = {
     deleted: false,
-  });
+  };
 
-  const resultado: Record<string, number> = {};
+  if (desde || hasta) {
 
-  posts.forEach((post) => {
+    filtro.createdAt = {};
+
+    if (desde) {
+      filtro.createdAt.$gte =
+        new Date(desde);
+    }
+
+    if (hasta) {
+
+      const fin =
+        new Date(hasta);
+
+      fin.setHours(
+        23,
+        59,
+        59,
+        999,
+      );
+
+      filtro.createdAt.$lte = fin;
+
+    }
+
+  }
+
+  const posts =
+    await this.postModel.find(filtro);
+
+  const resultado:
+    Record<string, number> = {};
+
+  posts.forEach(post => {
 
     resultado[post.autorNombre] =
       (resultado[post.autorNombre] || 0) + 1;
@@ -307,26 +341,62 @@ async getPostsByUser() {
 
 }
 
-async getCommentsByDate() {
+async getCommentsByDate(
+  desde?: string,
+  hasta?: string,
+) {
 
-  const posts = await this.postModel.find({
-    deleted: false,
-  });
+  const posts =
+    await this.postModel.find({
+      deleted: false,
+    });
 
-  const resultado: Record<string, number> = {};
+  const resultado:
+    Record<string, number> = {};
 
   posts.forEach(post => {
 
-    post.comentarios.forEach((comentario: any) => {
+    post.comentarios.forEach(
+      (comentario: any) => {
 
-      const fecha = new Date(comentario.fecha)
-        .toISOString()
-        .split('T')[0];
+        const fechaComentario =
+          new Date(comentario.fecha);
 
-      resultado[fecha] =
-        (resultado[fecha] || 0) + 1;
+        if (
+          desde &&
+          fechaComentario < new Date(desde)
+        ) {
+          return;
+        }
 
-    });
+        if (hasta) {
+
+          const fin =
+            new Date(hasta);
+
+          fin.setHours(
+            23,
+            59,
+            59,
+            999,
+          );
+
+          if (fechaComentario > fin) {
+            return;
+          }
+
+        }
+
+        const fecha =
+          fechaComentario
+            .toISOString()
+            .split('T')[0];
+
+        resultado[fecha] =
+          (resultado[fecha] || 0) + 1;
+
+      },
+    );
 
   });
 
@@ -339,20 +409,65 @@ async getCommentsByDate() {
 
 }
 
-async getCommentsByPost() {
+async getCommentsByPost(
+  desde?: string,
+  hasta?: string,
+) {
 
-  const posts = await this.postModel.find({
-    deleted: false,
+  const posts =
+    await this.postModel.find({
+      deleted: false,
+    });
+
+  return posts.map(post => {
+
+    const cantidad =
+      post.comentarios.filter(
+        (comentario: any) => {
+
+          const fecha =
+            new Date(comentario.fecha);
+
+          if (
+            desde &&
+            fecha < new Date(desde)
+          ) {
+            return false;
+          }
+
+          if (hasta) {
+
+            const fin =
+              new Date(hasta);
+
+            fin.setHours(
+              23,
+              59,
+              59,
+              999,
+            );
+
+            if (fecha > fin) {
+              return false;
+            }
+
+          }
+
+          return true;
+
+        },
+      ).length;
+
+    return {
+
+      publicacion:
+        post.titulo,
+
+      cantidad,
+
+    };
+
   });
-
-  return posts.map(post => ({
-
-    publicacion: post.titulo,
-
-    cantidad:
-      post.comentarios?.length || 0,
-
-  }));
 
 }
 }

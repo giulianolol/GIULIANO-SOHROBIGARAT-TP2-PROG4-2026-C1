@@ -6,19 +6,60 @@ appFadeIn>
 
   <h1>Dashboard de Estadísticas</h1>
 
+  <div class="filters">
+
+    <div class="field">
+
+      <label>Desde</label>
+
+      <input
+        type="date"
+        [(ngModel)]="fechaDesde">
+
+    </div>
+
+    <div class="field">
+
+      <label>Hasta</label>
+
+      <input
+        type="date"
+        [(ngModel)]="fechaHasta">
+
+    </div>
+
+    <button
+      class="filter-btn"
+      (click)="filtrar()">
+
+      Filtrar
+
+    </button>
+
+  </div>
+
   <div class="chart-card">
-    <h2>Publicaciones por usuario</h2>
+
+    <h2>📊 Publicaciones por usuario</h2>
+
     <canvas id="postsChart"></canvas>
+
   </div>
 
   <div class="chart-card">
-    <h2>Comentarios por fecha</h2>
+
+    <h2>💬 Comentarios por fecha</h2>
+
     <canvas id="commentsChart"></canvas>
+
   </div>
 
   <div class="chart-card">
-    <h2>Comentarios por publicación</h2>
+
+    <h2>🥧 Comentarios por publicación</h2>
+
     <canvas id="pieChart"></canvas>
+
   </div>
 
 </div>

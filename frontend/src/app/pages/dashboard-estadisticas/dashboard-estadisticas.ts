@@ -1,6 +1,6 @@
 import {
   Component,
-  OnInit,
+  AfterViewInit,
   inject,
 } from '@angular/core';
 
@@ -9,82 +9,119 @@ import {
   registerables,
 } from 'chart.js';
 
+import { FormsModule } from '@angular/forms';
+
 import { Navbar } from '../../components/navbar/navbar';
 import { StatsService } from '../../core/services/stats.service';
-import { AfterViewInit } from '@angular/core';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-estadisticas',
   standalone: true,
-  imports: [Navbar],
+  imports: [
+    Navbar,
+    FormsModule,
+  ],
   templateUrl: './dashboard-estadisticas.html',
   styleUrl: './dashboard-estadisticas.scss',
 })
 export class DashboardEstadisticas
   implements AfterViewInit {
 
+  fechaDesde = new Date(
+    Date.now() - 30 * 24 * 60 * 60 * 1000,
+  )
+    .toISOString()
+    .split('T')[0];
+
+  fechaHasta = new Date()
+    .toISOString()
+    .split('T')[0];
+
   private statsService =
     inject(StatsService);
 
   ngAfterViewInit(): void {
 
-  this.loadPostsChart();
+    this.loadPostsChart();
 
-  this.loadCommentsChart();
+    this.loadCommentsChart();
 
-  this.loadPieChart();
-}
-private loadPostsChart() {
+    this.loadPieChart();
 
-  this.statsService.getPostsByUser().subscribe({
+  }
 
-    next: (data) => {
+  filtrar() {
 
-      const labels =
-        data.map(x => x.usuario);
+    Chart.getChart('postsChart')?.destroy();
 
-      const values =
-        data.map(x => x.cantidad);
+    Chart.getChart('commentsChart')?.destroy();
 
-      new Chart(
+    Chart.getChart('pieChart')?.destroy();
 
-        'postsChart',
+    this.loadPostsChart();
 
-        {
+    this.loadCommentsChart();
 
-          type: 'bar',
+    this.loadPieChart();
 
-          data: {
+  }
 
-            labels,
+  private loadPostsChart() {
 
-            datasets: [
+    this.statsService.getPostsByUser(
+      this.fechaDesde,
+      this.fechaHasta,
+    ).subscribe({
 
-              {
+      next: (data) => {
 
-                label: 'Publicaciones',
+        const labels =
+          data.map(x => x.usuario);
 
-                data: values,
+        const values =
+          data.map(x => x.cantidad);
 
-                borderWidth: 1,
+        new Chart(
 
-              },
+          'postsChart',
 
-            ],
+          {
 
-          },
+            type: 'bar',
 
-          options: {
+            data: {
 
-            responsive: true,
+              labels,
 
-            plugins: {
+              datasets: [
 
-              legend: {
+                {
 
-                display: false,
+                  label: 'Publicaciones',
+
+                  data: values,
+
+                  borderWidth: 1,
+
+                },
+
+              ],
+
+            },
+
+            options: {
+
+              responsive: true,
+
+              plugins: {
+
+                legend: {
+
+                  display: false,
+
+                },
 
               },
 
@@ -92,123 +129,128 @@ private loadPostsChart() {
 
           },
 
-        },
+        );
 
-      );
+      },
 
-    },
+    });
 
-  });
+  }
 
-}
+  private loadCommentsChart() {
 
-private loadCommentsChart() {
+    this.statsService.getCommentsByDate(
+      this.fechaDesde,
+      this.fechaHasta,
+    ).subscribe({
 
-  this.statsService.getCommentsByDate().subscribe({
+      next: (data) => {
 
-    next: (data) => {
+        const labels =
+          data.map(x => x.fecha);
 
-      const labels =
-        data.map(x => x.fecha);
+        const values =
+          data.map(x => x.cantidad);
 
-      const values =
-        data.map(x => x.cantidad);
+        new Chart(
 
-      new Chart(
+          'commentsChart',
 
-        'commentsChart',
+          {
 
-        {
+            type: 'line',
 
-          type: 'line',
+            data: {
 
-          data: {
+              labels,
 
-            labels,
+              datasets: [
 
-            datasets: [
+                {
 
-              {
+                  label: 'Comentarios',
 
-                label: 'Comentarios',
+                  data: values,
 
-                data: values,
+                  fill: false,
 
-                fill: false,
+                  tension: .3,
 
-                tension: .3,
+                },
 
-              },
+              ],
 
-            ],
+            },
 
-          },
+            options: {
 
-          options: {
+              responsive: true,
 
-            responsive: true,
-
-          },
-
-        },
-
-      );
-
-    },
-
-  });
-
-}
-
-private loadPieChart() {
-
-  this.statsService.getCommentsByPost().subscribe({
-
-    next: (data) => {
-
-      const labels =
-        data.map(x => x.publicacion);
-
-      const values =
-        data.map(x => x.cantidad);
-
-      new Chart(
-
-        'pieChart',
-
-        {
-
-          type: 'pie',
-
-          data: {
-
-            labels,
-
-            datasets: [
-
-              {
-
-                data: values,
-
-              },
-
-            ],
+            },
 
           },
 
-          options: {
+        );
 
-            responsive: true,
+      },
+
+    });
+
+  }
+
+  private loadPieChart() {
+
+    this.statsService.getCommentsByPost(
+      this.fechaDesde,
+      this.fechaHasta,
+    ).subscribe({
+
+      next: (data) => {
+
+        const labels =
+          data.map(x => x.publicacion);
+
+        const values =
+          data.map(x => x.cantidad);
+
+        new Chart(
+
+          'pieChart',
+
+          {
+
+            type: 'pie',
+
+            data: {
+
+              labels,
+
+              datasets: [
+
+                {
+
+                  data: values,
+
+                },
+
+              ],
+
+            },
+
+            options: {
+
+              responsive: true,
+
+            },
 
           },
 
-        },
+        );
 
-      );
+      },
 
-    },
+    });
 
-  });
+  }
 
-}
 }

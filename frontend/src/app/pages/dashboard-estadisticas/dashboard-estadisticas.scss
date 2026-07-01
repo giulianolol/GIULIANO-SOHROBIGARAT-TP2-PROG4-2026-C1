@@ -8,25 +8,113 @@
 
 }
 
-.chart-card {
-
-  background: white;
-
-  padding: 25px;
+h1{
 
   margin-bottom: 30px;
 
-  border-radius: 18px;
-
-  box-shadow: 0 8px 25px rgba(0,0,0,.12);
+  color:#333;
 
 }
 
-.chart-card h2 {
+.filters{
 
-  margin-top: 0;
+  display:flex;
 
-  margin-bottom: 20px;
+  gap:20px;
+
+  align-items:flex-end;
+
+  margin-bottom:35px;
+
+  background:#fff;
+
+  padding:20px;
+
+  border-radius:16px;
+
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+  flex-wrap:wrap;
+
+}
+
+.field{
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+.field label{
+
+  font-weight:600;
+
+  margin-bottom:8px;
+
+  color:#555;
+
+}
+
+.field input{
+
+  padding:10px 14px;
+
+  border-radius:10px;
+
+  border:1px solid #ccc;
+
+  font-size:15px;
+
+}
+
+.filter-btn{
+
+  padding:11px 25px;
+
+  border:none;
+
+  border-radius:10px;
+
+  background:#1976d2;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-weight:bold;
+
+  transition:.25s;
+
+}
+
+.filter-btn:hover{
+
+  background:#125aa5;
+
+}
+
+.chart-card{
+
+  background:white;
+
+  padding:25px;
+
+  margin-bottom:35px;
+
+  border-radius:18px;
+
+  box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+.chart-card h2{
+
+  margin-top:0;
+
+  margin-bottom:25px;
+
+  color:#444;
 
 }
 

@@ -201,11 +201,16 @@ findOne(
 @Get('stats/posts-by-user')
 getPostsByUser(
   @Req() req,
+  @Query('desde') desde?: string,
+  @Query('hasta') hasta?: string,
 ) {
 
   this.checkAdmin(req.user);
 
-  return this.postsService.getPostsByUser();
+  return this.postsService.getPostsByUser(
+    desde,
+    hasta,
+  );
 
 }
 
@@ -213,11 +218,16 @@ getPostsByUser(
 @Get('stats/comments-by-date')
 getCommentsByDate(
   @Req() req,
+  @Query('desde') desde?: string,
+  @Query('hasta') hasta?: string,
 ) {
 
   this.checkAdmin(req.user);
 
-  return this.postsService.getCommentsByDate();
+  return this.postsService.getCommentsByDate(
+    desde,
+    hasta,
+  );
 
 }
 
@@ -225,11 +235,15 @@ getCommentsByDate(
 @Get('stats/comments-by-post')
 getCommentsByPost(
   @Req() req,
+  @Query('desde') desde?: string,
+  @Query('hasta') hasta?: string,
 ) {
 
   this.checkAdmin(req.user);
 
-  return this.postsService.getCommentsByPost();
+  return this.postsService.getCommentsByPost(
+    desde,
+    hasta,
+  );
 
-}
 }

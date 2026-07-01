@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -10,31 +12,73 @@ export class StatsService {
   private http = inject(HttpClient);
 
   private api =
-  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts/stats';
+    'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts/stats';
 
   // private api =
-    // 'http://localhost:3000/posts/stats';
+  // 'http://localhost:3000/posts/stats';
 
-  getPostsByUser() {
+  getPostsByUser(
+    desde?: string,
+    hasta?: string,
+  ) {
+
+    let params = new HttpParams();
+
+    if (desde) {
+      params = params.set('desde', desde);
+    }
+
+    if (hasta) {
+      params = params.set('hasta', hasta);
+    }
 
     return this.http.get<any[]>(
-      `${this.api}/posts-by-user`
+      `${this.api}/posts-by-user`,
+      { params },
     );
 
   }
 
-  getCommentsByDate() {
+  getCommentsByDate(
+    desde?: string,
+    hasta?: string,
+  ) {
+
+    let params = new HttpParams();
+
+    if (desde) {
+      params = params.set('desde', desde);
+    }
+
+    if (hasta) {
+      params = params.set('hasta', hasta);
+    }
 
     return this.http.get<any[]>(
-      `${this.api}/comments-by-date`
+      `${this.api}/comments-by-date`,
+      { params },
     );
 
   }
 
-  getCommentsByPost() {
+  getCommentsByPost(
+    desde?: string,
+    hasta?: string,
+  ) {
+
+    let params = new HttpParams();
+
+    if (desde) {
+      params = params.set('desde', desde);
+    }
+
+    if (hasta) {
+      params = params.set('hasta', hasta);
+    }
 
     return this.http.get<any[]>(
-      `${this.api}/comments-by-post`
+      `${this.api}/comments-by-post`,
+      { params },
     );
 
   }
