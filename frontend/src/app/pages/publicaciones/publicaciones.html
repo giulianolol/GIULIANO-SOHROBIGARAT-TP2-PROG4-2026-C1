@@ -1,6 +1,7 @@
 <app-navbar />
-
-<div class="container">
+<div
+class="container"
+appFadeIn>
 
   <h1>Publicaciones</h1>
 
@@ -12,8 +13,9 @@
       Ordenar por
     </span>
 
-    <button
+<button
       class="toolbar-btn"
+      [class.active]="sort === 'fecha'"
       (click)="changeSort('fecha')"
     >
       📅 Fecha
@@ -21,6 +23,7 @@
 
     <button
       class="toolbar-btn"
+      [class.active]="sort === 'likes'"
       (click)="changeSort('likes')"
     >
       ❤️ Likes

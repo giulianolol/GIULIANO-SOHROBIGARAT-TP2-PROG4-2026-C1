@@ -1,0 +1,163 @@
+<app-navbar></app-navbar>
+<div
+class="container"
+appFadeIn>
+
+  <h1>Dashboard de Usuarios</h1>
+
+  <hr>
+
+  <table>
+
+    <thead>
+
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Perfil</th>
+        <th>Estado</th>
+        <th>Acción</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      @for(user of usuarios(); track user._id){
+
+        <tr>
+
+          <td>
+            {{ user.nombre }} {{ user.apellido }}
+          </td>
+
+          <td>
+            {{ user.email }}
+          </td>
+
+          <td>
+            {{ user.perfil }}
+          </td>
+
+          <td>
+
+            @if(user.activo){
+
+              <span class="state-active">
+                🟢 Activo
+              </span>
+
+            } @else {
+
+              <span class="state-disabled">
+                🔴 Deshabilitado
+              </span>
+
+            }
+
+          </td>
+
+          <td>
+
+            @if(user.activo){
+
+              <button
+                class="disable"
+                (click)="deshabilitar(user._id)">
+                Deshabilitar
+              </button>
+
+            } @else {
+
+              <button
+                class="enable"
+                (click)="habilitar(user._id)">
+                Habilitar
+              </button>
+
+            }
+
+          </td>
+
+        </tr>
+
+      }
+
+    </tbody>
+
+  </table>
+
+  <hr>
+
+  <div class="form-card">
+
+    <h2>Crear nuevo usuario</h2>
+
+    <div class="form-grid">
+
+      <input
+        placeholder="Nombre"
+        [(ngModel)]="nuevoUsuario.nombre">
+
+      <input
+        placeholder="Apellido"
+        [(ngModel)]="nuevoUsuario.apellido">
+
+      <input
+        placeholder="Email"
+        [(ngModel)]="nuevoUsuario.email">
+
+      <input
+        placeholder="Usuario"
+        [(ngModel)]="nuevoUsuario.username">
+
+      <input
+        type="password"
+        placeholder="Contraseña"
+        [(ngModel)]="nuevoUsuario.password">
+
+      <input
+        type="date"
+        [(ngModel)]="nuevoUsuario.fechaNacimiento">
+
+    </div>
+
+    <div class="roles">
+
+      <label>
+
+        <input
+          type="radio"
+          value="usuario"
+          name="perfil"
+          [(ngModel)]="nuevoUsuario.perfil">
+
+        Usuario
+
+      </label>
+
+      <label>
+
+        <input
+          type="radio"
+          value="administrador"
+          name="perfil"
+          [(ngModel)]="nuevoUsuario.perfil">
+
+        Administrador
+
+      </label>
+
+    </div>
+
+    <button
+      class="create"
+      (click)="crearUsuario()">
+
+      Crear Usuario
+
+    </button>
+
+  </div>
+
+</div>

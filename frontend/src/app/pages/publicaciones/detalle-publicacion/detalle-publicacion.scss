@@ -152,6 +152,10 @@
 
     box-shadow:0 8px 20px rgba(0,0,0,.08);
 
+    box-sizing:border-box;
+
+    overflow:hidden;
+
 }
 
 .comment-card:hover{
@@ -204,6 +208,12 @@
 
     margin-bottom:15px;
 
+    overflow-wrap:break-word;
+
+    word-break:break-word;
+
+    white-space:pre-wrap;
+
 }
 
 textarea{
@@ -223,6 +233,10 @@ textarea{
     font-size:1rem;
 
     margin-top:15px;
+
+    box-sizing:border-box;
+
+    overflow-wrap:break-word;
 
 }
 

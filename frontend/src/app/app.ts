@@ -28,114 +28,26 @@ export class App implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  private warningTimer: any;
-  private logoutTimer: any;
-
   ngOnInit() {
 
-  console.log('loading inicial', this.loading());
+    const token = localStorage.getItem('token');
 
-  const token = localStorage.getItem('token');
-
-  if (!token) {
-
-    this.loading.set(false);
-    this.router.navigateByUrl('/login');
-
-    return;
-  }
-
-  this.authService.authorize().subscribe({
-
-next: () => {
-
-  console.log('loading antes:', this.loading());
-
-  setTimeout(() => {
-
-    console.log('voy a ocultar spinner');
-
-    this.loading.set(false);
-
-    console.log('loading después:', this.loading());
-
-    this.router.navigateByUrl('/publicaciones');
-
-  }, 3000);
-
-},
-
-    error: () => {
-
-      localStorage.clear();
-
+    if (!token) {
       this.loading.set(false);
-
       this.router.navigateByUrl('/login');
-
+      return;
     }
 
-  });
-
-}
-
-  startSessionTimers() {
-
-    this.clearTimers();
-
-    this.warningTimer = setTimeout(() => {
-      this.onSessionWarning();
-    }, 10 * 60 * 1000);
-
-    this.logoutTimer = setTimeout(() => {
-      this.logout();
-    }, 15 * 60 * 1000);
-  }
-
-  onSessionWarning() {
-
-    const extend = confirm(
-      'Tu sesión está por expirar. ¿Querés extenderla?'
-    );
-
-    if (extend) {
-      this.refreshSession();
-    } else {
-      this.logout();
-    }
-  }
-
-  refreshSession() {
-
-    this.authService.refresh().subscribe({
-
-      next: (res) => {
-
-        localStorage.setItem('token', res.access_token);
-
-        this.startSessionTimers();
-
+    this.authService.authorize().subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.authService.startSessionTimers();
       },
-
       error: () => {
-        this.logout();
-      },
-
+        localStorage.clear();
+        this.loading.set(false);
+        this.router.navigateByUrl('/login');
+      }
     });
-
   }
-
-  logout() {
-
-    this.clearTimers();
-    localStorage.clear();
-    this.router.navigateByUrl('/login');
-  }
-
-  clearTimers() {
-    if (this.warningTimer) clearTimeout(this.warningTimer);
-    if (this.logoutTimer) clearTimeout(this.logoutTimer);
-  }
-
-  
 }

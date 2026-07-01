@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 export interface LoginRequest {
@@ -24,19 +25,22 @@ export interface UserResponse {
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/auth';
-  // private apiUrl =
-// 'http://localhost:3000/auth';
+  private router = inject(Router);
+
+  private apiUrl = 'http://localhost:3000/auth';
+
+  private warningTimer: any;
+  private logoutTimer: any;
 
   login(body: LoginRequest) {
-  return this.http.post<{
-    access_token: string;
-    user: UserResponse;
-  }>(
-    `${this.apiUrl}/login`,
-    body,
-  );
-}
+    return this.http.post<{
+      access_token: string;
+      user: UserResponse;
+    }>(
+      `${this.apiUrl}/login`,
+      body,
+    );
+  }
 
   register(body: any) {
     return this.http.post(
@@ -47,7 +51,6 @@ export class AuthService {
 
   upload(file: File) {
     const formData = new FormData();
-
     formData.append('file', file);
 
     return this.http.post<{
@@ -59,21 +62,96 @@ export class AuthService {
   }
 
   authorize() {
-  return this.http.post<{
-    valid: boolean;
-    user: UserResponse;
-  }>(
-    `${this.apiUrl}/authorize`,
-    {},
-  );
-}
+    return this.http.post<{
+      valid: boolean;
+      user: UserResponse;
+    }>(
+      `${this.apiUrl}/authorize`,
+      {},
+    );
+  }
 
-refresh() {
-  return this.http.post<{
-    access_token: string;
-  }>(
-    `${this.apiUrl}/refresh`,
-    {},
-  );
-}
+  refresh() {
+    return this.http.post<{
+      access_token: string;
+    }>(
+      `${this.apiUrl}/refresh`,
+      {},
+    );
+  }
+
+  // ---- SESIÓN ----
+
+  startSessionTimers() {
+
+    this.clearTimers();
+
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const expiration = this.getTokenExpiration(token);
+    if (!expiration) return;
+
+    const msHastaExpirar = expiration - Date.now();
+    const msHastaWarning = msHastaExpirar - 10 * 1000;
+
+    console.log('ms hasta expirar:', msHastaExpirar);
+    console.log('ms hasta warning:', msHastaWarning);
+
+    this.warningTimer = setTimeout(() => {
+      this.onSessionWarning();
+    }, Math.max(msHastaWarning, 0));
+
+    this.logoutTimer = setTimeout(() => {
+      this.logout();
+    }, Math.max(msHastaExpirar, 0));
+  }
+
+  onSessionWarning() {
+    const extend = confirm(
+      'Tu sesión está por expirar. ¿Querés extenderla?'
+    );
+
+    if (extend) {
+      this.refreshSession();
+    } else {
+      this.logout();
+    }
+  }
+
+  refreshSession() {
+    this.refresh().subscribe({
+      next: (res) => {
+        localStorage.setItem('token', res.access_token);
+        this.startSessionTimers();
+      },
+      error: () => {
+        this.logout();
+      },
+    });
+  }
+
+  logout() {
+    this.clearTimers();
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
+  }
+
+  clearTimers() {
+    if (this.warningTimer) clearTimeout(this.warningTimer);
+    if (this.logoutTimer) clearTimeout(this.logoutTimer);
+  }
+
+  private getTokenExpiration(token: string): number | null {
+    try {
+      const payload = token.split('.')[1];
+      const decoded = atob(
+        payload.replace(/-/g, '+').replace(/_/g, '/'),
+      );
+      const parsed = JSON.parse(decoded);
+      return parsed.exp ? parsed.exp * 1000 : null;
+    } catch {
+      return null;
+    }
+  }
 }

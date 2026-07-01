@@ -283,4 +283,76 @@ async findOne(id: string) {
   return post;
 }
 
+async getPostsByUser() {
+
+  const posts = await this.postModel.find({
+    deleted: false,
+  });
+
+  const resultado: Record<string, number> = {};
+
+  posts.forEach((post) => {
+
+    resultado[post.autorNombre] =
+      (resultado[post.autorNombre] || 0) + 1;
+
+  });
+
+  return Object.entries(resultado).map(
+    ([usuario, cantidad]) => ({
+      usuario,
+      cantidad,
+    }),
+  );
+
+}
+
+async getCommentsByDate() {
+
+  const posts = await this.postModel.find({
+    deleted: false,
+  });
+
+  const resultado: Record<string, number> = {};
+
+  posts.forEach(post => {
+
+    post.comentarios.forEach((comentario: any) => {
+
+      const fecha = new Date(comentario.fecha)
+        .toISOString()
+        .split('T')[0];
+
+      resultado[fecha] =
+        (resultado[fecha] || 0) + 1;
+
+    });
+
+  });
+
+  return Object.entries(resultado).map(
+    ([fecha, cantidad]) => ({
+      fecha,
+      cantidad,
+    }),
+  );
+
+}
+
+async getCommentsByPost() {
+
+  const posts = await this.postModel.find({
+    deleted: false,
+  });
+
+  return posts.map(post => ({
+
+    publicacion: post.titulo,
+
+    cantidad:
+      post.comentarios?.length || 0,
+
+  }));
+
+}
 }

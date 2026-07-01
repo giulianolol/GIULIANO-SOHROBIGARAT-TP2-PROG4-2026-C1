@@ -12,11 +12,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { PostsService } from '../../../core/services/posts.service';
+import { TimeAgoPipe } from '../../../shared/pipes/time-ago-pipe';
 
 @Component({
   selector: 'app-detalle-publicacion',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, TimeAgoPipe],
   templateUrl:
     './detalle-publicacion.html',
   styleUrl:

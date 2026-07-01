@@ -6,7 +6,8 @@ import {
   Post,
   Put,
   Query,
-  Patch
+  Patch,
+  ForbiddenException
 } from '@nestjs/common';
 
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -26,6 +27,18 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
   ) {}
+
+  private checkAdmin(user: any) {
+
+  if (user.perfil !== 'administrador') {
+
+    throw new ForbiddenException(
+      'Solo un administrador puede acceder a las estadísticas',
+    );
+
+  }
+
+}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -182,5 +195,41 @@ findOne(
   @Param('id') id: string,
 ) {
   return this.postsService.findOne(id);
+}
+
+@UseGuards(JwtAuthGuard)
+@Get('stats/posts-by-user')
+getPostsByUser(
+  @Req() req,
+) {
+
+  this.checkAdmin(req.user);
+
+  return this.postsService.getPostsByUser();
+
+}
+
+@UseGuards(JwtAuthGuard)
+@Get('stats/comments-by-date')
+getCommentsByDate(
+  @Req() req,
+) {
+
+  this.checkAdmin(req.user);
+
+  return this.postsService.getCommentsByDate();
+
+}
+
+@UseGuards(JwtAuthGuard)
+@Get('stats/comments-by-post')
+getCommentsByPost(
+  @Req() req,
+) {
+
+  this.checkAdmin(req.user);
+
+  return this.postsService.getCommentsByPost();
+
 }
 }

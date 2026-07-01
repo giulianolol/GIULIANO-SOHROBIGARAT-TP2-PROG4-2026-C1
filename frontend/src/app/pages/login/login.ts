@@ -73,6 +73,8 @@ next: (response) => {
     JSON.stringify(response.user),
   );
 
+   this.authService.startSessionTimers();
+
   this.router.navigateByUrl(
     '/publicaciones',
   );

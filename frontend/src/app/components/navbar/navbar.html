@@ -14,14 +14,27 @@
       Mi Perfil
     </a>
 
+    @if(isAdmin){
+
+      <a routerLink="/dashboard-usuarios">
+        Usuarios
+      </a>
+
+      <a routerLink="/dashboard-estadisticas">
+        Estadísticas
+      </a>
+
+    }
+
     <span>
-      {{ user?.nombre }}
+      {{ user?.nombre | capitalize }}
     </span>
 
-    <button (click)="logout()">
-      Cerrar Sesión
-    </button>
-
+    <button
+appHoverEffect
+(click)="logout()">
+Cerrar sesión
+</button>
   </div>
 
 </nav>

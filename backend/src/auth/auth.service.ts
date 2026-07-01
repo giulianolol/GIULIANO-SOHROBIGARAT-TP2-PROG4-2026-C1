@@ -77,6 +77,12 @@ export class AuthService {
     );
   }
 
+  if (!user.activo) {
+  throw new BadRequestException(
+    'El usuario se encuentra deshabilitado',
+  );
+}
+
 const userObject = (user as any).toObject();
 
 delete userObject.password;
@@ -90,7 +96,7 @@ const payload = {
   nombre: userObject.nombre
 };
 
-console.log('JWT LOGIN');
+// console.log('JWT LOGIN');
 
 return {
   access_token: this.jwtService.sign(payload),

@@ -1,0 +1,39 @@
+.container {
+
+  max-width: 1200px;
+
+  margin: 40px auto;
+
+  padding: 20px;
+
+}
+
+.chart-card {
+
+  background: white;
+
+  padding: 25px;
+
+  margin-bottom: 30px;
+
+  border-radius: 18px;
+
+  box-shadow: 0 8px 25px rgba(0,0,0,.12);
+
+}
+
+.chart-card h2 {
+
+  margin-top: 0;
+
+  margin-bottom: 20px;
+
+}
+
+canvas{
+
+  width:100% !important;
+
+  max-height:450px;
+
+}

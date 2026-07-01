@@ -1,4 +1,6 @@
-<div class="post-card">
+<div
+class="post-card"
+appHighlight>
 
   @if(post.imagenUrl){
 
@@ -37,11 +39,11 @@
 
     <p class="description">
 
-      {{ post.descripcion }}
+      {{ post.descripcion | truncate:120 }}
 
     </p>
 
-    <div class="buttons">
+<div class="buttons">
 
       <button
         class="primary"
@@ -51,29 +53,29 @@
       </button>
 
       <button
-        class="success"
-        (click)="like.emit()"
+        class="like-btn"
+        [class.liked]="isLiked"
+        (click)="toggleLike()"
+        [attr.title]="isLiked ? 'Quitar like' : 'Dar like'"
       >
-        ❤️ Like
+        <span class="heart">{{ isLiked ? '❤️' : '🤍' }}</span>
+        {{ post.likes.length }}
       </button>
 
-      <button
-        class="danger"
-        (click)="unlike.emit()"
-      >
-        💔 Quitar Like
-      </button>
+@if(
+  post.autorId === user._id
+  || user.perfil === 'administrador'
+){
 
-      @if(post.autorId === user._id){
+  <button
+    class="danger"
+    (click)="delete.emit()">
 
-        <button
-          class="delete"
-          (click)="delete.emit()"
-        >
-          🗑 Eliminar
-        </button>
+    🗑 Eliminar
 
-      }
+  </button>
+
+}
 
       @if(post.imagenUrl && post.autorId === user._id){
 

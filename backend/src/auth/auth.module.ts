@@ -12,27 +12,31 @@ import { UsersModule } from '../users/users.module';
   imports: [
     UsersModule,
     PassportModule,
-
     JwtModule.registerAsync({
       imports: [ConfigModule],
-
       inject: [ConfigService],
-
       useFactory: (
         configService: ConfigService,
       ) => ({
         secret: configService.get<string>(
           'JWT_SECRET',
         ),
-
         signOptions: {
-          expiresIn: '7d',
+          expiresIn: '40s',
         },
       }),
     }),
   ],
 
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+
+  providers: [
+    AuthService,
+    JwtStrategy,
+  ],
+
+  exports: [
+    AuthService,
+  ],
 })
 export class AuthModule {}
