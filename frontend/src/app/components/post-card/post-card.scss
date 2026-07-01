@@ -108,6 +108,9 @@
 
     margin-bottom:25px;
 
+    white-space: normal;       /* Asegura el comportamiento de salto normal */
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .buttons{
