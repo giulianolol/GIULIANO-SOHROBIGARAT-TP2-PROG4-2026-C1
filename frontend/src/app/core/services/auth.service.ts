@@ -29,7 +29,7 @@ export class AuthService {
 
   // private apiUrl = 'http://localhost:3000/auth';
   private apiUrl =
-  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/auth';
 
   private warningTimer: any;
   private logoutTimer: any;

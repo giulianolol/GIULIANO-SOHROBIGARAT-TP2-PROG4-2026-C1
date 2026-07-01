@@ -9,7 +9,7 @@ export class UsersService {
   private http = inject(HttpClient);
   
   private apiUrl =
-  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/users';
 
   // private apiUrl =
     // 'http://localhost:3000/users';

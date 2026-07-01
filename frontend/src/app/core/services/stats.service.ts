@@ -10,7 +10,7 @@ export class StatsService {
   private http = inject(HttpClient);
 
   private api =
-  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts';
+  'https://giuliano-sohrobigarat-tp2-prog4-2026-c1.onrender.com/posts/stats';
 
   // private api =
     // 'http://localhost:3000/posts/stats';
