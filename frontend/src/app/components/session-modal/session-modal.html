@@ -1,0 +1,39 @@
+@if(authService.showSessionModal()){
+
+  <div class="modal-backdrop">
+
+    <div class="modal-box">
+
+      <div class="modal-icon">
+        ⏳
+      </div>
+
+      <h2>
+        Tu sesión está por expirar
+      </h2>
+
+      <p>
+        ¿Querés extenderla para seguir navegando?
+      </p>
+
+      <div class="modal-buttons">
+
+        <button
+          class="btn-cancel"
+          (click)="cancel()">
+          Cerrar sesión
+        </button>
+
+        <button
+          class="btn-extend"
+          (click)="extend()">
+          Extender sesión
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

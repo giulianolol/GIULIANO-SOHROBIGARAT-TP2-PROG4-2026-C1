@@ -12,11 +12,12 @@ import {
 
 import { NgIf } from '@angular/common';
 import { AuthService } from './core/services/auth.service';
+import { SessionModal } from './components/session-modal/session-modal';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgIf],
+  imports: [RouterOutlet, NgIf, SessionModal],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

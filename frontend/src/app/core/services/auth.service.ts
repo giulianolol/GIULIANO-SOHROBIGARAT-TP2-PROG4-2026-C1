@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -26,6 +26,8 @@ export interface UserResponse {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+
+  showSessionModal = signal(false);
 
   // private apiUrl = 'http://localhost:3000/auth';
   private apiUrl =
@@ -109,16 +111,16 @@ export class AuthService {
     }, Math.max(msHastaExpirar, 0));
   }
 
-  onSessionWarning() {
-    const extend = confirm(
-      'Tu sesión está por expirar. ¿Querés extenderla?'
-    );
-
-    if (extend) {
-      this.refreshSession();
-    } else {
-      this.logout();
-    }
+ onSessionWarning() {
+    this.showSessionModal.set(true);
+  }
+  extendSession() {
+    this.showSessionModal.set(false);
+    this.refreshSession();
+  }
+  cancelSession() {
+    this.showSessionModal.set(false);
+    this.logout();
   }
 
   refreshSession() {
@@ -134,6 +136,7 @@ export class AuthService {
   }
 
   logout() {
+    this.showSessionModal.set(false);
     this.clearTimers();
     localStorage.clear();
     this.router.navigateByUrl('/login');
