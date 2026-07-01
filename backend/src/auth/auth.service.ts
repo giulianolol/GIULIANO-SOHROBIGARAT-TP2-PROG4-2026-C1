@@ -55,10 +55,12 @@ export class AuthService {
     return userObject;
   }
 
-  async login(loginDto: LoginDto) {
-  const user = await this.usersService.findByEmailOrUsername(
-    loginDto.usuario,
-  );
+async login(loginDto: LoginDto) {
+
+  const user =
+    await this.usersService.findByEmailOrUsername(
+      loginDto.usuario,
+    );
 
   if (!user) {
     throw new BadRequestException(
@@ -66,10 +68,17 @@ export class AuthService {
     );
   }
 
-  const passwordOk = await bcrypt.compare(
-    loginDto.password,
-    user.password,
-  );
+  if (!user.activo) {
+    throw new BadRequestException(
+      'El usuario se encuentra deshabilitado',
+    );
+  }
+
+  const passwordOk =
+    await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
 
   if (!passwordOk) {
     throw new BadRequestException(
@@ -77,31 +86,21 @@ export class AuthService {
     );
   }
 
-  if (!user.activo) {
-  throw new BadRequestException(
-    'El usuario se encuentra deshabilitado',
-  );
-}
+  const userObject = (user as any).toObject();
 
-const userObject = (user as any).toObject();
+  delete userObject.password;
 
-delete userObject.password;
+  const payload = {
+    sub: userObject._id,
+    email: userObject.email,
+    perfil: userObject.perfil,
+    nombre: userObject.nombre,
+  };
 
-console.log('userObject:', userObject);
-
-const payload = {
-  sub: userObject._id,
-  email: userObject.email,
-  perfil: userObject.perfil,
-  nombre: userObject.nombre
-};
-
-// console.log('JWT LOGIN');
-
-return {
-  access_token: this.jwtService.sign(payload),
-  user: userObject,
-};
+  return {
+    access_token: this.jwtService.sign(payload),
+    user: userObject,
+  };
 }
 
 async refresh(user: any) {

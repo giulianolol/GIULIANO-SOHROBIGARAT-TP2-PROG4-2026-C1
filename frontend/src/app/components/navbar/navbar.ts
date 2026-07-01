@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
+
 import { CapitalizePipe } from '../../shared/pipes/capitalize-pipe';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,7 +18,7 @@ export class Navbar {
   );
 
   constructor(
-    private router: Router,
+    private authService: AuthService,
   ) {}
 
   get isAdmin() {
@@ -24,12 +26,7 @@ export class Navbar {
   }
 
   logout() {
-
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-
-    this.router.navigateByUrl('/login');
-
+    this.authService.logout();
   }
 
 }
