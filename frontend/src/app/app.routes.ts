@@ -8,6 +8,7 @@ import { CrearPublicacion } from './features/publicaciones/crear-publicacion/cre
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardEstadisticas } from './pages/dashboard-estadisticas/dashboard-estadisticas';
 import { adminGuard } from './core/guards/admin-guard';
+import { notFoundGuard } from './core/guards/not-found-guard';
 
 export const routes: Routes = [
   {
@@ -58,4 +59,9 @@ export const routes: Routes = [
   component: DashboardEstadisticas,
   canActivate: [AuthGuard, adminGuard],
 },
+{
+    path: '**',
+    component: Login,
+    canActivate: [notFoundGuard],
+  },
 ];

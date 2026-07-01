@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-publicaciones',
@@ -37,172 +38,187 @@ export class Publicaciones implements OnInit {
     private router: Router,
     private postsService: PostsService,
     private authService: AuthService,
+    private route: ActivatedRoute,   // 👈 AGREGADO
   ) {}
 
   ngOnInit() {
+
+    // 👇 AGREGADO: leer el query param que manda el adminGuard
+    this.route.queryParams.subscribe(params => {
+      if (params['error'] === 'sin-permisos') {
+        this.errorMessage.set('No tenés permisos para acceder a esa página.');
+
+        // opcional: limpiar el query param de la URL para que no quede pegado
+        this.router.navigate([], {
+          queryParams: {},
+          replaceUrl: true,
+        });
+
+        // opcional: auto-ocultar el mensaje después de unos segundos
+        setTimeout(() => {
+          this.errorMessage.set('');
+        }, 5000);
+      }
+    });
+
     this.loadPosts();
   }
 
   get currentPage() {
-  return this.offset / this.limit + 1;
-}
-
-loadPosts() {
-  this.postsService
-    .getPosts(
-      this.sort,
-      this.limit,
-      this.offset,
-    )
-    .subscribe({
-      next: (posts) => {
-        this.publicaciones.set(posts);
-
-        this.hasNextPage =
-          posts.length === this.limit;
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-}
-
-changeSort(sort: string) {
-  this.sort = sort;
-  this.loadPosts();
-}
-
-addLike(postId: string) {
-
-  this.loadingLike.set(postId);
-
-  this.postsService
-    .addLike(postId, this.user._id)
-    .subscribe({
-
-      next: () => {
-        this.loadPosts();
-      },
-
-      complete: () => {
-        this.loadingLike.set(null);
-      }
-
-    });
-
-}
-
-
-
-removeLike(postId: string) {
-
-  this.loadingLike.set(postId);
-
-  this.postsService
-    .removeLike(postId, this.user._id)
-    .subscribe({
-      next: () => {
-        this.loadPosts();
-      },
-
-      complete: () => {
-        this.loadingLike.set(null);
-      },
-      
-      error: (err) => {
-        console.error(err);
-      },
-    });
-}
-
-logout() {
-    localStorage.removeItem('user');
-    this.router.navigateByUrl('/login');
-}
-
-deletePost(postId: string) {
-  this.postsService
-    .deletePost(
-      postId,
-      this.user._id,
-      this.user.perfil,
-    )
-    .subscribe({
-      next: () => {
-        this.loadPosts();
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-}
-
-nextPage() {
-  if (!this.hasNextPage) {
-    return;
+    return this.offset / this.limit + 1;
   }
 
-  this.offset += this.limit;
-  this.loadPosts();
-}
+  loadPosts() {
+    this.postsService
+      .getPosts(
+        this.sort,
+        this.limit,
+        this.offset,
+      )
+      .subscribe({
+        next: (posts) => {
+          this.publicaciones.set(posts);
 
-previousPage() {
-  if (this.offset >= this.limit) {
-    this.offset -= this.limit;
+          this.hasNextPage =
+            posts.length === this.limit;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  changeSort(sort: string) {
+    this.sort = sort;
     this.loadPosts();
   }
-}
 
-changeImage(
-  event: Event,
-  postId: string,
-) {
+  addLike(postId: string) {
 
-  const input =
-    event.target as HTMLInputElement;
+    this.loadingLike.set(postId);
 
-  if (
-    !input.files ||
-    input.files.length === 0
-  ) {
-    return;
+    this.postsService
+      .addLike(postId, this.user._id)
+      .subscribe({
+
+        next: () => {
+          this.loadPosts();
+        },
+
+        complete: () => {
+          this.loadingLike.set(null);
+        }
+
+      });
+
   }
 
-  const file =
-    input.files[0];
+  removeLike(postId: string) {
 
-  this.authService.upload(
-    file,
-  ).subscribe({
+    this.loadingLike.set(postId);
 
-    next: (response) => {
-
-      this.postsService
-        .updateImage(
-          postId,
-          response.imageUrl,
-        )
-        .subscribe(() => {
-
+    this.postsService
+      .removeLike(postId, this.user._id)
+      .subscribe({
+        next: () => {
           this.loadPosts();
-        });
-    },
-  });
-}
+        },
 
-removeImage(postId: string) {
-  this.postsService.removeImage(postId).subscribe({
-    next: () => {
-      this.errorMessage.set('');
+        complete: () => {
+          this.loadingLike.set(null);
+        },
+
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigateByUrl('/login');
+  }
+
+  deletePost(postId: string) {
+    this.postsService
+      .deletePost(
+        postId,
+        this.user._id,
+        this.user.perfil,
+      )
+      .subscribe({
+        next: () => {
+          this.loadPosts();
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
+
+  nextPage() {
+    if (!this.hasNextPage) {
+      return;
+    }
+
+    this.offset += this.limit;
+    this.loadPosts();
+  }
+
+  previousPage() {
+    if (this.offset >= this.limit) {
+      this.offset -= this.limit;
       this.loadPosts();
-    },
-    error: (err) => {
-      console.error(err);
-    },
-  });
+    }
+  }
+
+  changeImage(
+    event: Event,
+    postId: string,
+  ) {
+
+    const input =
+      event.target as HTMLInputElement;
+
+    if (
+      !input.files ||
+      input.files.length === 0
+    ) {
+      return;
+    }
+
+    const file =
+      input.files[0];
+
+    this.authService.upload(
+      file,
+    ).subscribe({
+
+      next: (response) => {
+
+        this.postsService
+          .updateImage(
+            postId,
+            response.imageUrl,
+          )
+          .subscribe(() => {
+
+            this.loadPosts();
+          });
+      },
+    });
+  }
+
+  removeImage(postId: string) {
+    this.postsService.removeImage(postId).subscribe({
+      next: () => {
+        this.errorMessage.set('');
+        this.loadPosts();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
 }
-
-
-
-}
-

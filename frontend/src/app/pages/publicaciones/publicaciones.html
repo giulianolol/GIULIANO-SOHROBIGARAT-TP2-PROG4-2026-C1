@@ -3,10 +3,17 @@
 class="container"
 appFadeIn>
 
-  <h1>Publicaciones</h1>
+
+<h1>Publicaciones</h1>
+
+@if(errorMessage()){
+  <div class="error-banner">
+    ⚠️ {{ errorMessage() }}
+  </div>
+}
 
 <div class="toolbar">
-
+  
   <div class="sort-section">
 
     <span class="toolbar-title">

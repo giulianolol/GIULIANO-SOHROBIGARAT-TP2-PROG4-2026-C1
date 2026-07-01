@@ -10,14 +10,10 @@ export const adminGuard: CanActivateFn = () => {
   );
 
   if (user?.perfil === 'administrador') {
-
     return true;
-
   }
 
-  alert('No tenés permisos para acceder a esta página.');
-
-  router.navigateByUrl('/publicaciones');
+  router.navigateByUrl('/publicaciones?error=sin-permisos');
 
   return false;
 
