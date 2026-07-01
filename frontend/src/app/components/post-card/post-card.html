@@ -1,60 +1,27 @@
-<div
-class="post-card"
-appHighlight>
-
-  @if(post.imagenUrl){
-
-    <div class="image-container">
-
-      <img
-        [src]="post.imagenUrl"
-        class="post-image"
-      >
-
-    </div>
-
+<div class="post-card" appHighlight>
+  @if(post.imagenUrl) {
+  <div class="image-container">
+    <img [src]="post.imagenUrl" class="post-image" />
+  </div>
   }
 
   <div class="post-body">
-
     <div class="post-header">
-
       <div>
+        <h3>{{ post.titulo | capitalize }}</h3>
 
-        <h3>
-          {{ post.titulo }}
-        </h3>
-
-        <small>
-          👤 {{ post.autorNombre | capitalize }}
-        </small>
-
-        <br>
-
-        <small>
-          🕒 {{ post.createdAt | timeAgo }}
-        </small>
-
+        <small>👤 {{ post.autorNombre | capitalize }}</small>
       </div>
 
-      <div class="likes">
-        ❤️ {{ post.likes.length }}
-      </div>
-
+      <div class="likes">❤️ {{ post.likes.length }}</div>
     </div>
 
     <p class="description">
-
-      {{ post.descripcion | truncate:120 }}
-
+      {{ post.descripcion | truncate : 120 }}
     </p>
 
     <div class="buttons">
-
-      <button
-        class="primary"
-        [routerLink]="['/publicaciones', post._id]"
-      >
+      <button class="primary" [routerLink]="['/publicaciones', post._id]">
         👁 Ver detalle
       </button>
 
@@ -64,38 +31,17 @@ appHighlight>
         (click)="toggleLike()"
         [attr.title]="isLiked ? 'Quitar like' : 'Dar like'"
       >
-        <span class="heart">{{ isLiked ? '❤️' : '🤍' }}</span>
+        <span class="heart">{{ isLiked ? "❤️" : "🤍" }}</span>
         {{ post.likes.length }}
       </button>
 
-      @if(
-        post.autorId === user._id
-        || user.perfil === 'administrador'
-      ){
-
-        <button
-          class="danger"
-          (click)="delete.emit()">
-
-          🗑 Eliminar
-
-        </button>
-
+      @if( post.autorId === user._id || user.perfil === 'administrador' ) {
+      <button class="danger" (click)="delete.emit()">🗑 Eliminar</button>
+      } @if(post.imagenUrl && post.autorId === user._id) {
+      <button class="warning" (click)="removeImage.emit()">
+        📷 Eliminar foto
+      </button>
       }
-
-      @if(post.imagenUrl && post.autorId === user._id){
-
-        <button
-          class="warning"
-          (click)="removeImage.emit()"
-        >
-          📷 Eliminar foto
-        </button>
-
-      }
-
     </div>
-
   </div>
-
 </div>
